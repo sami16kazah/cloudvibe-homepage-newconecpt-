@@ -132,11 +132,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onCloseMobile();
                 }}
                 aria-current={isActive ? 'location' : undefined}
-                title={`${sec.index} · ${sec.label}`}
+                title={sec.label}
               >
                 <span className="cv-sidebar-icon">{SECTION_ICONS[sec.id]}</span>
                 <span className="cv-sidebar-item-text">
-                  <span className="cv-sidebar-index">{sec.index}</span>
                   <span>{sec.label}</span>
                 </span>
                 {isActive && <span className="cv-sidebar-active-pip" aria-hidden="true" />}
