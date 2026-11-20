@@ -61,7 +61,6 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
   onOpenLegal,
 }) => {
   const [openAccordion, setOpenAccordion] = useState<string | null>('gesundheitswesen');
-  const [pointerX, setPointerX] = useState(50);
   const [pulseBit, setPulseBit] = useState(0);
   const footerRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -92,13 +91,6 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
     return () => window.clearInterval(id);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-    if (!footerRef.current) return;
-    const rect = footerRef.current.getBoundingClientRect();
-    const pct = ((e.clientX - rect.left) / rect.width) * 100;
-    setPointerX(Math.max(0, Math.min(100, pct)));
-  };
-
   const toggleCol = (key: string) => {
     setOpenAccordion((prev) => (prev === key ? null : key));
   };
@@ -111,8 +103,6 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
     <footer
       ref={footerRef}
       className={`cv-adobe-footer ${isVisible ? 'is-visible' : ''}`}
-      onMouseMove={handleMouseMove}
-      style={{ '--footer-px': `${pointerX}%` } as React.CSSProperties}
     >
       {/* 1. Flowing CloudVibe Aurora CTA Banner */}
       <div className="cv-footer-aurora-banner">
@@ -382,7 +372,11 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
 
       {/* 4. Monumental Adobe-Inspired Full-Width Animated CloudVibe Brand Showcase */}
       <div className="cv-footer-monument" aria-label="cloudvibe — Your IT. Our business.">
-        <div className="cv-monument-aurora" aria-hidden="true" />
+        <div className="cv-monument-aurora" aria-hidden="true">
+          <span className="cv-aurora-orb cv-aurora-orb-green" />
+          <span className="cv-aurora-orb cv-aurora-orb-blue" />
+          <span className="cv-aurora-orb cv-aurora-orb-orange" />
+        </div>
         <div className="cv-monument-waves" aria-hidden="true">
           <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="cv-monument-wave-svg">
             <path
@@ -420,11 +414,29 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
             aria-label="cloudvibe — Your IT. Our business."
           >
             <defs>
-              <linearGradient id="cv-monument-word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient
+                id="cv-monument-word-grad"
+                gradientUnits="userSpaceOnUse"
+                x1="0"
+                y1="0"
+                x2="1960"
+                y2="0"
+              >
                 <stop offset="0%" stopColor="var(--ink-strong)" />
-                <stop offset="48%" stopColor="var(--ink-strong)" />
-                <stop offset="76%" stopColor="var(--cv-green)" />
-                <stop offset="100%" stopColor="var(--cv-cloud-blue)" />
+                <stop offset="22%" stopColor="var(--cv-green)" />
+                <stop offset="40%" stopColor="var(--cv-cloud-blue)" />
+                <stop offset="56%" stopColor="var(--ink-strong)" />
+                <stop offset="76%" stopColor="var(--cv-green-bright)" />
+                <stop offset="90%" stopColor="var(--cv-orange)" />
+                <stop offset="100%" stopColor="var(--ink-strong)" />
+                <animateTransform
+                  attributeName="gradientTransform"
+                  type="translate"
+                  from="0 0"
+                  to="-980 0"
+                  dur="10s"
+                  repeatCount="indefinite"
+                />
               </linearGradient>
               <linearGradient id="cv-monument-line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="var(--cv-cloud-blue)" stopOpacity="0.15" />
