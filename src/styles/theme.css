@@ -3464,20 +3464,58 @@ a.cv-contact-tile:hover {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 20px;
+  gap: 28px;
+  padding-top: 8px;
+}
+
+.cv-horizon-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 6px;
+}
+
+.cv-horizon-slogan {
+  font-family: var(--font-brand);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+  color: var(--ink-strong);
+  letter-spacing: -0.01em;
+}
+
+.cv-horizon-coords {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-subtle);
+}
+
+.cv-horizon-lockup {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  user-select: none;
+}
+
+.cv-horizon-cloud-crown {
+  width: clamp(92px, 12vw, 152px);
+  height: auto;
+  margin-left: clamp(8px, 1.4vw, 18px);
+  margin-bottom: -6px;
+  display: block;
 }
 
 .cv-horizon-giant-text {
   font-family: var(--font-brand);
-  font-size: clamp(32px, 6.2vw, 76px);
+  font-size: clamp(36px, 6.2vw, 76px);
   font-weight: 700;
-  line-height: 0.92;
+  line-height: 0.94;
   letter-spacing: -0.03em;
   background: linear-gradient(90deg, var(--ink-strong) 0%, var(--cv-green) 55%, var(--cv-cloud-blue) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  user-select: none;
 }
 
 /* ==========================================================================

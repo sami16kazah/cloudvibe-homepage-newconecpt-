@@ -393,8 +393,17 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
           <span>01001100 10110001 · YOUR IT. OUR BUSINESS. · 01001100 10110001 · GOCH · TELEMATIKINFRASTRUKTUR · MANAGED SERVICES · </span>
         </div>
         <div className="cv-container cv-horizon-wordmark-row">
-          <CloudVibeLogo variant="compact" className="cv-horizon-brand" />
-          <span className="cv-horizon-giant-text">cloudvibe.de</span>
+          <div className="cv-horizon-meta">
+            <span className="cv-horizon-slogan">Your IT. Our business.</span>
+            <span className="cv-horizon-coords">
+              51.6814° N, 6.1619° E · GOCH · TELEKONNEKT-PARTNER
+            </span>
+          </div>
+
+          <div className="cv-horizon-lockup">
+            <CloudVibeLogo variant="mark" className="cv-horizon-cloud-crown" />
+            <span className="cv-horizon-giant-text">cloudvibe.de</span>
+          </div>
         </div>
       </div>
     </footer>
