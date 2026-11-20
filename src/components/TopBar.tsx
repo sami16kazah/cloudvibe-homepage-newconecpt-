@@ -21,6 +21,7 @@ interface TopBarProps {
   theme: 'dark' | 'light';
   activeSection: string;
   scrolled: boolean;
+  pastHero: boolean;
   mobileMenuOpen: boolean;
   onToggleTheme: () => void;
   onOpenMobileMenu: () => void;
@@ -37,6 +38,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   theme,
   activeSection,
   scrolled,
+  pastHero,
   mobileMenuOpen,
   onToggleTheme,
   onOpenMobileMenu,
@@ -78,11 +80,11 @@ export const TopBar: React.FC<TopBarProps> = ({
       ref={navRef}
     >
       <div className="cv-topbar-inner">
-        {/* Left: ArtCraft-Style Bordered Brand Cell + Desktop Nav */}
+        {/* Left: Scroll-Reactive Brand Cell (Cloud Only in Hero -> Smooth Reveal to Right on Scroll) */}
         <div className="cv-topbar-left">
           <a
             href="#hero"
-            className="cv-topbar-brand-cell"
+            className={`cv-topbar-brand-cell ${pastHero ? 'is-expanded' : ''}`}
             onClick={(e) => {
               e.preventDefault();
               setOpenMenu(null);
@@ -90,20 +92,16 @@ export const TopBar: React.FC<TopBarProps> = ({
             }}
             aria-label="cloudvibe — Your IT. Our business."
           >
-            <CloudVibeLogo variant="nav" animateBinary={false} />
+            <CloudVibeLogo variant="mark" animateBinary={false} className="cv-topbar-cloud-only" />
+            <span className="cv-topbar-logo-reveal" aria-hidden={!pastHero}>
+              <span className="cv-topbar-logo-reveal-inner">
+                <span className="cv-topbar-wordmark">cloudvibe</span>
+                <span className="cv-topbar-slogan">Your IT. Our business.</span>
+              </span>
+            </span>
           </a>
 
           <nav className="cv-topbar-nav desktop-only" aria-label="Hauptnavigation">
-            <button
-              type="button"
-              className={`cv-nav-trigger ${activeSection === 'hero' ? 'is-active' : ''}`}
-              onClick={() => {
-                setOpenMenu(null);
-                onNavigate('hero');
-              }}
-            >
-              START
-            </button>
 
             {menuGroups.map((group) => {
               const isOpen = openMenu === group.key;

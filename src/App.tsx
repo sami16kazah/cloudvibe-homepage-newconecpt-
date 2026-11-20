@@ -39,6 +39,7 @@ export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all');
 
   // Interactive modals
@@ -78,6 +79,13 @@ export const App: React.FC = () => {
         document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docHeight > 0 ? scrollY / docHeight : 0);
       setScrolled(scrollY > 24);
+
+      // Reveal full navbar wordmark once the hero logo scrolls out of the first section
+      const heroEl = document.getElementById('hero');
+      const heroThreshold = heroEl
+        ? Math.max(260, heroEl.offsetHeight * 0.42)
+        : 320;
+      setPastHero(scrollY > heroThreshold);
 
       const offset = 180;
       let current = NAV_SECTIONS[0].id;
@@ -161,6 +169,7 @@ export const App: React.FC = () => {
         theme={theme}
         activeSection={activeSection}
         scrolled={scrolled}
+        pastHero={pastHero}
         mobileMenuOpen={mobileMenuOpen}
         onToggleTheme={toggleTheme}
         onOpenMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
