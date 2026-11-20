@@ -8,6 +8,7 @@ import {
   Send,
 } from 'lucide-react';
 import { CLOUDVIBE_CONTACT } from '../data/cloudvibeData';
+import { SectionHeader } from './SectionHeader';
 
 export const ContactSection: React.FC = () => {
   const [name, setName] = useState('');
@@ -26,10 +27,10 @@ export const ContactSection: React.FC = () => {
   return (
     <section id="kontakt" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">06 / KONTAKT &amp; BERATUNG</span>
-          <span className="cv-section-meta">PERSÖNLICH VOR ORT IN GOCH ODER REMOTE DE-WEIT</span>
-        </div>
+        <SectionHeader
+          code="06 / KONTAKT & BERATUNG"
+          meta="PERSÖNLICH VOR ORT IN GOCH ODER REMOTE DE-WEIT"
+        />
 
         <div className="cv-contact-grid">
           {/* Left direct channels */}

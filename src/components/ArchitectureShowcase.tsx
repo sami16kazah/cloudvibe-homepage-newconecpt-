@@ -8,6 +8,7 @@ import {
   Shield,
 } from 'lucide-react';
 import { ARCHITECTURE_SCENARIOS } from '../data/cloudvibeData';
+import { SectionHeader } from './SectionHeader';
 
 export const ArchitectureShowcase: React.FC = () => {
   const [selectedId, setSelectedId] = useState(ARCHITECTURE_SCENARIOS[0].id);
@@ -17,10 +18,10 @@ export const ArchitectureShowcase: React.FC = () => {
   return (
     <section id="architektur" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">03 / LIVE-ARCHITEKTUR</span>
-          <span className="cv-section-meta">IT, DIE EINFACH LÄUFT · TELEMETRIE-VORSCHAU</span>
-        </div>
+        <SectionHeader
+          code="03 / LIVE-ARCHITEKTUR"
+          meta="IT, DIE EINFACH LÄUFT · TELEMETRIE-VORSCHAU"
+        />
 
         <div className="cv-arch-shell">
           <div className="cv-arch-header">

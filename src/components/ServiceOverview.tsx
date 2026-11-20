@@ -6,6 +6,7 @@ import {
   type CloudVibeService,
 } from '../data/cloudvibeData';
 import { ServiceIcon } from './ServiceIcon';
+import { SectionHeader } from './SectionHeader';
 
 interface ServiceOverviewProps {
   onSelectService: (service: CloudVibeService) => void;
@@ -21,12 +22,10 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({
   return (
     <section id="ueberblick" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">01 / ÜBERBLICK</span>
-          <span className="cv-section-meta">
-            13 LÖSUNGEN · 7 IT-PROFIS · GOCH &amp; DEUTSCHLANDWEIT
-          </span>
-        </div>
+        <SectionHeader
+          code="01 / ÜBERBLICK"
+          meta="13 LÖSUNGEN · 7 IT-PROFIS · GOCH & DEUTSCHLANDWEIT"
+        />
 
         <div className="cv-overview-grid">
           {/* Left editorial column with authentic Goch company photo */}

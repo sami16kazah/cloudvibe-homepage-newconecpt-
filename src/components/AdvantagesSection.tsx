@@ -8,6 +8,7 @@ import {
   Users,
 } from 'lucide-react';
 import { ADVANTAGES } from '../data/cloudvibeData';
+import { SectionHeader } from './SectionHeader';
 
 const ADVANTAGE_ICONS: Record<string, React.ReactNode> = {
   response: <Clock size={18} />,
@@ -22,10 +23,10 @@ export const AdvantagesSection: React.FC = () => {
   return (
     <section id="vorteile" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">04 / PRINZIPIEN &amp; VORTEILE</span>
-          <span className="cv-section-meta">GEBAUT FÜR AUSFALLSICHERHEIT</span>
-        </div>
+        <SectionHeader
+          code="04 / PRINZIPIEN & VORTEILE"
+          meta="GEBAUT FÜR AUSFALLSICHERHEIT"
+        />
 
         <div className="cv-advantages-intro">
           <div className="cv-section-head-stack">

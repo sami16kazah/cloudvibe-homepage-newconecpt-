@@ -57,6 +57,19 @@ export const App: React.FC = () => {
     }
   }, [theme]);
 
+  // Support deep hash links (e.g. #ueberblick, #loesungen) on initial load
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, '');
+    if (!hash) return;
+    const el = document.getElementById(hash);
+    if (el) {
+      requestAnimationFrame(() => {
+        el.scrollIntoView({ behavior: 'auto', block: 'start' });
+        window.dispatchEvent(new Event('scroll'));
+      });
+    }
+  }, []);
+
   // Scroll spy & vertical scroll progress
   useEffect(() => {
     const onScroll = () => {

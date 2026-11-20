@@ -7,6 +7,7 @@ import {
 } from '../data/cloudvibeData';
 import { ServiceIcon } from './ServiceIcon';
 import { ServicePreviewGraphic } from './ServicePreviewGraphic';
+import { SectionHeader } from './SectionHeader';
 
 interface ServiceGridProps {
   activeCategory: 'all' | ServiceCategory;
@@ -48,10 +49,10 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({
   return (
     <section id="loesungen" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">02 / DAS PORTFOLIO</span>
-          <span className="cv-section-meta">LÖSUNGEN, DIE WIRKLICH HELFEN</span>
-        </div>
+        <SectionHeader
+          code="02 / DAS PORTFOLIO"
+          meta="LÖSUNGEN, DIE WIRKLICH HELFEN"
+        />
 
         <div className="cv-section-intro-row">
           <div>

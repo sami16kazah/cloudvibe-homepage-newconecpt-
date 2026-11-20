@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, ArrowUpRight, Briefcase, Calendar, Check, MapPin } from 'lucide-react';
 import { CLOUDVIBE_CONTACT, REFERENCES } from '../data/cloudvibeData';
+import { SectionHeader } from './SectionHeader';
 
 interface ReferencesAndTeamProps {
   onOpenBooking: () => void;
@@ -41,10 +42,10 @@ export const ReferencesAndTeam: React.FC<ReferencesAndTeamProps> = ({ onOpenBook
   return (
     <section id="referenzen" className="cv-section cv-reveal">
       <div className="cv-container">
-        <div className="cv-section-bar">
-          <span className="cv-section-code">05 / ÜBER UNS, TEAM &amp; REFERENZEN</span>
-          <span className="cv-section-meta">AUS GOCH · AM NIEDERRHEIN &amp; DEUTSCHLANDWEIT</span>
-        </div>
+        <SectionHeader
+          code="05 / ÜBER UNS, TEAM & REFERENZEN"
+          meta="AUS GOCH · AM NIEDERRHEIN & DEUTSCHLANDWEIT"
+        />
 
         {/* Authentic Company & Team Photo Showcase */}
         <div className="cv-team-showcase">
