@@ -1410,12 +1410,21 @@ textarea:focus-visible {
   color: var(--ink-strong);
 }
 
-.cv-serif-italic {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.14em;
-  color: var(--cv-green);
+.cv-brand-highlight {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: inherit;
+  background: linear-gradient(95deg, var(--cv-green) 0%, var(--cv-green-bright) 52%, var(--cv-cloud-blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+:root[data-theme='light'] .cv-brand-highlight {
+  background: linear-gradient(95deg, #218f1d 0%, var(--cv-green) 48%, var(--cv-cloud-blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .cv-hero-subtitle {

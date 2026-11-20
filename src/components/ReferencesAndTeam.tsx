@@ -134,7 +134,7 @@ export const ReferencesAndTeam: React.FC<ReferencesAndTeamProps> = ({ onOpenBook
             <span className="cv-eyebrow-mono">FOKUS AUF DEIN KERNGESCHÄFT · UNSERE MISSION</span>
             <h3>
               Wir schaffen Freiräume für{' '}
-              <span className="cv-serif-italic">dein Kerngeschäft.</span>
+              <span className="cv-brand-highlight">dein Kerngeschäft.</span>
             </h3>
             <p>
               Mit durchdachten Prozessen, smarter Infrastruktur und einer nachhaltigen IT-Strategie,

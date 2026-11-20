@@ -292,15 +292,11 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
         <div className="cv-hero-center">
           <div className="cv-hero-mask" aria-hidden="true" />
 
-          <span className="cv-hero-kicker-line">
-            TELEKONNEKT-PARTNER · AUS GOCH, FÜR GANZ DEUTSCHLAND
-          </span>
-
           <CloudVibeLogo variant="full" className="cv-hero-logo" />
 
           <h1 className="cv-hero-title">
             IT-Betreuung für Arztpraxen, Apotheken{' '}
-            <span className="cv-serif-italic">&amp; Pflegeeinrichtungen.</span>
+            <span className="cv-brand-highlight">&amp; Pflegeeinrichtungen.</span>
           </h1>
 
           <p className="cv-hero-subtitle">
@@ -350,10 +346,10 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
           </div>
 
           <div className="cv-hero-meta-strip">
+            <span>TELEKONNEKT-PARTNER</span>
             <span>Ø &lt; 7 MIN. ANTWORTZEIT</span>
             <span>KEIN CALLCENTER</span>
             <span>DEUTSCHE RECHENZENTREN</span>
-            <span>INDIVIDUELLES SLA</span>
           </div>
         </div>
       </div>

@@ -24,12 +24,15 @@ export const ServiceOverview: React.FC<ServiceOverviewProps> = ({
       <div className="cv-container">
         <SectionHeader
           code="01 / ÜBERBLICK"
-          meta="13 LÖSUNGEN · 7 IT-PROFIS · GOCH & DEUTSCHLANDWEIT"
+          meta="TELEKONNEKT-PARTNER · AUS GOCH, FÜR GANZ DEUTSCHLAND"
         />
 
         <div className="cv-overview-grid">
           {/* Left editorial column with authentic Goch company photo */}
           <div className="cv-overview-copy">
+            <span className="cv-eyebrow-mono cv-accent-green">
+              TELEKONNEKT-PARTNER · AUS GOCH, FÜR GANZ DEUTSCHLAND
+            </span>
             <h2 className="cv-display-heading">
               Dreizehn Lösungen.
               <br />
