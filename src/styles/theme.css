@@ -1628,13 +1628,16 @@ textarea:focus-visible {
 
 .cv-hero-section {
   position: relative;
+  min-height: calc(100svh - var(--topbar-h));
+  display: flex;
+  flex-direction: column;
   border-bottom: 1px solid var(--line);
 }
 
 .cv-hero-stage {
   position: relative;
-  min-height: calc(100svh - var(--topbar-h) - 42px);
-  min-height: 700px;
+  flex: 1 0 auto;
+  min-height: max(640px, calc(100svh - var(--topbar-h) - 42px));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1647,17 +1650,17 @@ textarea:focus-visible {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(600px 380px at 20% 25%, rgba(46, 179, 41, 0.13), transparent 70%),
-    radial-gradient(560px 380px at 82% 28%, rgba(37, 99, 194, 0.14), transparent 70%),
-    radial-gradient(500px 320px at 52% 88%, rgba(255, 140, 66, 0.08), transparent 72%);
+    radial-gradient(52% 48% at 18% 24%, rgba(46, 179, 41, 0.14), transparent 72%),
+    radial-gradient(50% 48% at 84% 26%, rgba(37, 99, 194, 0.15), transparent 72%),
+    radial-gradient(48% 42% at 50% 90%, rgba(255, 140, 66, 0.09), transparent 74%);
   animation: cvAuroraBreath 11s ease-in-out infinite alternate;
 }
 
 :root[data-theme='light'] .cv-hero-aurora {
   background:
-    radial-gradient(600px 380px at 20% 25%, rgba(46, 179, 41, 0.09), transparent 70%),
-    radial-gradient(560px 380px at 82% 28%, rgba(24, 80, 152, 0.09), transparent 70%),
-    radial-gradient(500px 320px at 52% 88%, rgba(255, 140, 66, 0.07), transparent 72%);
+    radial-gradient(52% 48% at 18% 24%, rgba(46, 179, 41, 0.1), transparent 72%),
+    radial-gradient(50% 48% at 84% 26%, rgba(24, 80, 152, 0.1), transparent 72%),
+    radial-gradient(48% 42% at 50% 90%, rgba(255, 140, 66, 0.08), transparent 74%);
 }
 
 .cv-orbit-svg {
@@ -1699,9 +1702,9 @@ textarea:focus-visible {
   position: absolute;
   top: 0;
   left: 0;
-  width: 66px;
-  height: 66px;
-  border-radius: 17px;
+  width: 76px;
+  height: 76px;
+  border-radius: 19px;
   border: 1px solid color-mix(in srgb, var(--tile-accent) 45%, var(--line-strong));
   background: linear-gradient(
     145deg,

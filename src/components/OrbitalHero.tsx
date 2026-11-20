@@ -108,9 +108,8 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
   const isCompact = stageSize.width < 720;
   const cx = stageSize.width / 2;
   const cy = stageSize.height / 2;
-  const minDim = Math.min(stageSize.width, stageSize.height);
 
-  // Orbit radii tuned so icons form a clean, generous perimeter around the center logo & text
+  // Full-viewport orbital radii sweeping edge-to-edge like ArtCraft while framing center copy cleanly
   const rings = isCompact
     ? [
         { rx: Math.max(190, stageSize.width * 0.52), ry: Math.max(350, stageSize.height * 0.48) },
@@ -118,9 +117,9 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
         { rx: Math.max(262, stageSize.width * 0.72), ry: Math.max(440, stageSize.height * 0.6) },
       ]
     : [
-        { rx: Math.max(410, Math.min(510, stageSize.width * 0.365)), ry: Math.max(310, minDim * 0.415) },
-        { rx: Math.max(495, Math.min(625, stageSize.width * 0.44)), ry: Math.max(360, minDim * 0.485) },
-        { rx: Math.max(585, Math.min(735, stageSize.width * 0.515)), ry: Math.max(415, minDim * 0.555) },
+        { rx: Math.max(430, stageSize.width * 0.34), ry: Math.max(325, stageSize.height * 0.39) },
+        { rx: Math.max(540, stageSize.width * 0.43), ry: Math.max(395, stageSize.height * 0.48) },
+        { rx: Math.max(660, stageSize.width * 0.52), ry: Math.max(465, stageSize.height * 0.57) },
       ];
 
   const hoveredService = hoveredId
@@ -235,8 +234,8 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
             const isHiddenOnTiny = isCompact && item.ring === 2;
 
             // Gentle soft veil if an icon passes near the center logo or copy column on smaller screens
-            const dxNorm = Math.abs(x - cx) / (isCompact ? 176 : 335);
-            const dyNorm = Math.abs(y - cy) / (isCompact ? 325 : 250);
+            const dxNorm = Math.abs(x - cx) / (isCompact ? 176 : 300);
+            const dyNorm = Math.abs(y - cy) / (isCompact ? 325 : 235);
             const inTextZone = dxNorm < 1 && dyNorm < 1;
             const tileOpacity = isHovered ? 1 : inTextZone ? (isCompact ? 0.1 : 0.22) : 1;
 
@@ -260,7 +259,7 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
                 aria-label={`${item.service.name}: ${item.service.tagline}`}
               >
                 <span className="cv-orbit-tile-inner">
-                  <ServiceIcon iconKey={item.service.iconKey} size={isCompact ? 20 : 25} />
+                  <ServiceIcon iconKey={item.service.iconKey} size={isCompact ? 20 : 28} />
                 </span>
                 <span className="cv-orbit-tile-code">{item.service.index}</span>
               </button>
