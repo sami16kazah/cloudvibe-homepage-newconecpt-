@@ -157,11 +157,11 @@ textarea:focus-visible {
 
 .cv-top-progress {
   position: fixed;
-  top: 0;
+  top: calc(var(--topbar-h) - 1px);
   left: 0;
   right: 0;
   height: 2px;
-  z-index: 120;
+  z-index: 105;
   pointer-events: none;
 }
 
@@ -949,7 +949,7 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   height: 46px;
-  width: 48px;
+  width: 54px;
   overflow: hidden;
   transition: width 520ms var(--ease-spring);
 }
@@ -968,8 +968,8 @@ textarea:focus-visible {
 
 .cv-nav-anim-cloud-group {
   transform-box: view-box;
-  transform-origin: 211px 74px;
-  transform: translate(-65px, 66px) scale(1.04);
+  transform-origin: 211px 72px;
+  transform: translate(-51px, 68px) scale(1.08);
   transition: transform 520ms var(--ease-spring);
 }
 
@@ -1101,9 +1101,9 @@ textarea:focus-visible {
   height: 100%;
   padding: 0 18px;
   border: none;
-  border-left: 1px solid var(--line);
-  background: var(--bg-invert);
-  color: var(--fg-invert);
+  border-left: 1px solid rgba(46, 179, 41, 0.5);
+  background: var(--cv-green);
+  color: #ffffff;
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 700;
@@ -1117,7 +1117,7 @@ textarea:focus-visible {
 }
 
 .cv-topbar-cta-flush:hover {
-  background: var(--cv-green);
+  background: #249b20;
   color: #ffffff;
 }
 
@@ -1153,50 +1153,56 @@ textarea:focus-visible {
   .cv-adobe-mobile-menu-btn {
     width: 38px;
     height: 38px;
-    border: none;
-    border-radius: 999px;
+    border: 1px solid transparent;
+    border-radius: 4px;
     background: transparent;
     color: var(--ink-strong);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 160ms ease;
+    transition: background-color 160ms ease, border-color 160ms ease;
   }
 
   .cv-adobe-mobile-menu-btn:hover {
     background: var(--bg-card);
+    border-color: var(--line);
   }
 
   .cv-topbar-theme-cell {
     width: 36px;
     height: 36px;
-    border-left: none;
-    border-radius: 999px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
   }
 
   .cv-topbar-theme-cell:hover {
     background: var(--bg-card);
+    border-color: var(--line-strong);
   }
 
   .cv-adobe-mobile-pill {
-    height: 34px;
-    padding: 0 16px;
-    border: none;
-    border-radius: 999px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid var(--cv-green);
+    border-radius: 4px;
     background: var(--cv-green);
     color: #ffffff;
-    font-family: var(--font-body);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 160ms ease, transform 160ms ease;
+    gap: 5px;
+    box-shadow: 0 4px 14px rgba(46, 179, 41, 0.26);
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
   }
 
   .cv-adobe-mobile-pill:hover {
     background: #249b20;
+    border-color: #249b20;
   }
 
   .cv-adobe-mobile-sheet {
@@ -1368,11 +1374,14 @@ textarea:focus-visible {
   .cv-adobe-quick-btn {
     height: 40px;
     border: 1px solid var(--line-strong);
-    border-radius: 10px;
+    border-radius: 4px;
     background: var(--bg-elevated);
     color: var(--ink-strong);
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1389,11 +1398,14 @@ textarea:focus-visible {
     height: 42px;
     padding: 0 14px;
     border: 1px solid var(--line-strong);
-    border-radius: 999px;
+    border-radius: 4px;
     background: transparent;
     color: var(--ink-strong);
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 11px;
     font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -1401,13 +1413,17 @@ textarea:focus-visible {
 
   .cv-adobe-primary-pill {
     height: 42px;
-    padding: 0 18px;
-    border: none;
-    border-radius: 999px;
+    padding: 0 16px;
+    border: 1px solid var(--cv-green);
+    border-radius: 4px;
     background: var(--cv-green);
     color: #ffffff;
-    font-size: 13.5px;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(46, 179, 41, 0.26);
     display: inline-flex;
     align-items: center;
     justify-content: center;

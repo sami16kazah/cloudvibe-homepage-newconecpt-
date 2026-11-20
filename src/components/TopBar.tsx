@@ -261,13 +261,14 @@ export const TopBar: React.FC<TopBarProps> = ({
             <ArrowUpRight size={14} />
           </button>
 
-          {/* Mobile Adobe-Style Rounded Pill CTA */}
+          {/* Mobile Compact Editorial CTA matching site-wide Beratung buttons */}
           <button
             type="button"
             className="cv-adobe-mobile-pill mobile-only"
             onClick={onOpenBooking}
           >
-            <span>Beratung</span>
+            <span>BERATUNG</span>
+            <ArrowUpRight size={13} />
           </button>
         </div>
       </div>
