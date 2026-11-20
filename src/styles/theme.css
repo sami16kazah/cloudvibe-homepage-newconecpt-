@@ -175,8 +175,8 @@ textarea:focus-visible {
 .cv-main-frame {
   flex: 1;
   min-width: 0;
-  margin-left: var(--sidebar-w);
-  transition: margin-left 280ms var(--ease-spring);
+  width: 100%;
+  padding-top: var(--topbar-h);
 }
 
 /* ==========================================================================
@@ -890,60 +890,95 @@ textarea:focus-visible {
 }
 
 /* ==========================================================================
-   ArtCraft-Inspired Hairline Top Command Bar
+   ArtCraft-Style Fixed Full-Width Hairline Top Bar + Mobile Slide Drawer
    ========================================================================== */
 
 .cv-topbar {
-  position: relative;
-  z-index: 80;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 95;
   height: var(--topbar-h);
   background: var(--bg-glass);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--line);
+  transition: background-color 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.cv-topbar.is-scrolled {
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  border-bottom-color: var(--line-strong);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+}
+
+:root[data-theme='light'] .cv-topbar.is-scrolled {
+  box-shadow: 0 6px 20px rgba(16, 16, 20, 0.07);
 }
 
 .cv-topbar-inner {
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
-  padding: 0 20px;
-  gap: 12px;
+  padding: 0;
 }
 
 .cv-topbar-left,
 .cv-topbar-right {
   display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.cv-topbar-brand-cell {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
+  padding: 0 20px;
+  border-right: 1px solid var(--line);
+  transition: background-color 160ms ease;
+}
+
+.cv-topbar-brand-cell:hover {
+  background: var(--bg-card);
+}
+
+.cv-topbar-mark {
+  width: 34px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.cv-topbar-brand-word {
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 16.5px;
+  color: var(--ink-strong);
+  letter-spacing: -0.02em;
+}
+
+.cv-topbar-brand-word span {
+  color: var(--cv-green);
 }
 
 .cv-topbar-nav {
   display: flex;
   align-items: center;
   gap: 4px;
-}
-
-.cv-nav-pill {
-  padding: 5px 11px;
-  border-radius: 3px;
-  border: none;
-  background: var(--bg-invert);
-  color: var(--fg-invert);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  padding: 0 14px;
 }
 
 .cv-dropdown-wrap {
   position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .cv-nav-trigger {
-  height: 32px;
-  padding: 0 11px;
+  height: 30px;
+  padding: 0 10px;
   border: none;
   background: transparent;
   color: var(--ink-muted);
@@ -954,7 +989,8 @@ textarea:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  border-radius: 4px;
+  border-radius: 3px;
+  white-space: nowrap;
   transition: color 160ms ease, background-color 160ms ease;
 }
 
@@ -962,6 +998,12 @@ textarea:focus-visible {
 .cv-nav-trigger.is-open {
   color: var(--ink-strong);
   background: var(--bg-card);
+}
+
+.cv-nav-trigger.is-active {
+  background: var(--bg-invert);
+  color: var(--fg-invert);
+  font-weight: 700;
 }
 
 .cv-nav-trigger .cv-chevron {
@@ -972,10 +1014,206 @@ textarea:focus-visible {
   transform: rotate(180deg);
 }
 
+/* ArtCraft Right-Edge Bordered Utility Cells + Flush CTA */
+.cv-topbar-cell {
+  height: 100%;
+  padding: 0 14px;
+  border: none;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.cv-topbar-cell:hover {
+  background: var(--bg-card);
+  color: var(--ink-strong);
+}
+
+.cv-topbar-theme-cell {
+  width: 48px;
+  padding: 0;
+  color: var(--ink-strong);
+}
+
+.cv-topbar-theme-cell:hover {
+  color: var(--cv-orange);
+}
+
+.cv-topbar-menu-btn {
+  width: 48px;
+  padding: 0;
+  color: var(--ink-strong);
+}
+
+.cv-topbar-cta-flush {
+  height: 100%;
+  padding: 0 18px;
+  border: none;
+  border-left: 1px solid var(--line);
+  background: var(--bg-invert);
+  color: var(--fg-invert);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.cv-topbar-cta-flush:hover {
+  background: var(--cv-green);
+  color: #ffffff;
+}
+
+/* Mobile & Tablet Slide-Over Drawer (Hidden on Desktop >= 1024px) */
+.cv-mobile-drawer {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .cv-mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 110;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--line-strong);
+    transform: translateX(-100%);
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: var(--shadow-dropdown);
+    transition: transform 280ms var(--ease-spring), visibility 280ms ease;
+  }
+
+  .cv-mobile-drawer.is-mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .cv-drawer-head {
+    height: var(--topbar-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cv-drawer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cv-drawer-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .cv-drawer-brand-text strong {
+    font-family: var(--font-brand);
+    font-size: 15px;
+    color: var(--ink-strong);
+  }
+
+  .cv-drawer-brand-text small {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--cv-green);
+  }
+
+  .cv-drawer-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px;
+    overflow-y: auto;
+  }
+
+  .cv-drawer-item {
+    height: 42px;
+    padding: 0 12px;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    transition: background-color 160ms ease, color 160ms ease;
+  }
+
+  .cv-drawer-item.is-active {
+    background: var(--bg-card);
+    border-color: var(--line-strong);
+    color: var(--ink-strong);
+  }
+
+  .cv-drawer-item.is-active .cv-sidebar-icon {
+    color: var(--cv-green);
+  }
+
+  .cv-drawer-foot {
+    padding: 12px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cv-drawer-action,
+  .cv-drawer-cta {
+    height: 40px;
+    padding: 0 14px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .cv-drawer-action {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+  }
+
+  .cv-drawer-cta {
+    border: 1px solid var(--cv-green);
+    background: var(--cv-green);
+    color: #ffffff;
+  }
+}
+
 /* ArtCraft Sharp Hairline Dropdown Panel */
 .cv-dropdown-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 11px);
   left: 0;
   width: 340px;
   background: var(--bg-card);
@@ -1579,6 +1817,7 @@ textarea:focus-visible {
 .cv-section {
   padding: 68px 0;
   border-bottom: 1px solid var(--line);
+  scroll-margin-top: calc(var(--topbar-h) + 8px);
 }
 
 .cv-reveal {
@@ -4056,6 +4295,12 @@ a.cv-contact-tile:hover {
    Responsive Breakpoints (1280px, 1024px, 768px, 390px — Zero Sideways Scroll)
    ========================================================================== */
 
+@media (max-width: 1380px) {
+  .desktop-wide-only {
+    display: none;
+  }
+}
+
 @media (max-width: 1280px) {
   .desktop-wide-only {
     display: none;
@@ -4267,12 +4512,16 @@ a.cv-contact-tile:hover {
     padding-top: 8px;
   }
 
-  .cv-topbar-cta span {
+  .cv-topbar-cta-flush {
+    padding: 0 14px;
+  }
+
+  .cv-topbar-cta-flush span {
     display: none;
   }
 
-  .cv-theme-toggle-label {
-    display: none;
+  .cv-topbar-brand-cell {
+    padding: 0 14px;
   }
 
   .cv-horizon-wordmark-row {

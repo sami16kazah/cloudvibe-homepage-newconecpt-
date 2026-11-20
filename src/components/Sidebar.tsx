@@ -9,8 +9,6 @@ import {
   Home,
   Mail,
   Moon,
-  PanelLeftClose,
-  PanelLeftOpen,
   ShieldCheck,
   Sun,
   X,
@@ -20,11 +18,8 @@ import { CloudVibeLogo } from './CloudVibeLogo';
 
 interface SidebarProps {
   activeSection: string;
-  scrollProgress: number;
-  expanded: boolean;
   mobileOpen: boolean;
   theme: 'dark' | 'light';
-  onToggleExpand: () => void;
   onCloseMobile: () => void;
   onToggleTheme: () => void;
   onNavigate: (id: string) => void;
@@ -42,13 +37,11 @@ const SECTION_ICONS: Record<string, React.ReactNode> = {
   kontakt: <Mail size={18} />,
 };
 
+/* Mobile & Tablet Slide-Over Navigation Drawer (hidden on desktop where fixed TopBar + ScrollRuler handle navigation cleanly) */
 export const Sidebar: React.FC<SidebarProps> = ({
   activeSection,
-  scrollProgress,
-  expanded,
   mobileOpen,
   theme,
-  onToggleExpand,
   onCloseMobile,
   onToggleTheme,
   onNavigate,
@@ -57,7 +50,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <>
-      {/* Backdrop for mobile drawer */}
       <div
         className={`cv-sidebar-backdrop ${mobileOpen ? 'is-visible' : ''}`}
         onClick={onCloseMobile}
@@ -66,24 +58,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <aside
         id="cv-sidebar-nav"
-        className={`cv-sidebar ${expanded ? 'is-expanded' : ''} ${mobileOpen ? 'is-mobile-open' : ''}`}
-        aria-label="Seitenleiste Navigation"
+        className={`cv-mobile-drawer ${mobileOpen ? 'is-mobile-open' : ''}`}
+        aria-label="Mobile Navigation"
         role={mobileOpen ? 'dialog' : undefined}
         aria-modal={mobileOpen ? true : undefined}
       >
-        {/* Scroll Progress Accent Rail */}
-        <div className="cv-sidebar-progress-track" aria-hidden="true">
-          <div
-            className="cv-sidebar-progress-fill"
-            style={{ height: `${Math.min(100, Math.max(4, scrollProgress * 100))}%` }}
-          />
-        </div>
-
-        {/* Header: CloudVibe Mark + Expand Toggle */}
-        <div className="cv-sidebar-head">
+        <div className="cv-drawer-head">
           <a
             href="#hero"
-            className="cv-sidebar-brand"
+            className="cv-drawer-brand"
             onClick={(e) => {
               e.preventDefault();
               onNavigate('hero');
@@ -92,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             aria-label="cloudvibe Startseite"
           >
             <CloudVibeLogo variant="mark" className="cv-sidebar-mark" />
-            <span className="cv-sidebar-brand-text">
+            <span className="cv-drawer-brand-text">
               <strong>cloudvibe</strong>
               <small>Goch · IT &amp; TI</small>
             </span>
@@ -100,17 +83,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button
             type="button"
-            className="cv-sidebar-collapse-btn desktop-only"
-            onClick={onToggleExpand}
-            aria-label={expanded ? 'Seitenleiste einklappen' : 'Seitenleiste ausklappen'}
-            title={expanded ? 'Einklappen' : 'Ausklappen'}
-          >
-            {expanded ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
-          </button>
-
-          <button
-            type="button"
-            className="cv-sidebar-collapse-btn mobile-only"
+            className="cv-sidebar-collapse-btn"
             onClick={onCloseMobile}
             aria-label="Menü schließen"
           >
@@ -118,77 +91,60 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
 
-        {/* Section Navigation */}
-        <nav className="cv-sidebar-nav" aria-label="Abschnitte">
+        <nav className="cv-drawer-nav" aria-label="Abschnitte">
           {NAV_SECTIONS.map((sec) => {
             const isActive = activeSection === sec.id;
             return (
               <button
                 key={sec.id}
                 type="button"
-                className={`cv-sidebar-item ${isActive ? 'is-active' : ''}`}
+                className={`cv-drawer-item ${isActive ? 'is-active' : ''}`}
                 onClick={() => {
                   onNavigate(sec.id);
                   onCloseMobile();
                 }}
                 aria-current={isActive ? 'location' : undefined}
-                title={sec.label}
               >
                 <span className="cv-sidebar-icon">{SECTION_ICONS[sec.id]}</span>
-                <span className="cv-sidebar-item-text">
-                  <span>{sec.label}</span>
-                </span>
-                {isActive && <span className="cv-sidebar-active-pip" aria-hidden="true" />}
+                <span>{sec.label}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Bottom Utility Actions */}
-        <div className="cv-sidebar-foot">
+        <div className="cv-drawer-foot">
           <button
             type="button"
-            className="cv-sidebar-action"
+            className="cv-drawer-action"
             onClick={() => {
               onOpenRemote();
               onCloseMobile();
             }}
-            title="Fernwartung starten"
           >
-            <span className="cv-sidebar-icon">
-              <Headphones size={17} />
-            </span>
-            <span className="cv-sidebar-label">Fernwartung</span>
+            <Headphones size={17} />
+            <span>Fernwartung</span>
           </button>
 
           <button
             type="button"
-            className="cv-sidebar-action"
+            className="cv-drawer-action"
             onClick={onToggleTheme}
             aria-label={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
-            title={theme === 'dark' ? 'Light Theme' : 'Dark Theme'}
           >
-            <span className="cv-sidebar-icon">
-              {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-            </span>
-            <span className="cv-sidebar-label">
-              {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </span>
+            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
+            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
 
           <button
             type="button"
-            className="cv-sidebar-cta"
+            className="cv-drawer-cta"
             onClick={() => {
               onOpenBooking();
               onCloseMobile();
             }}
-            title="Beratung vereinbaren"
           >
-            <span className="cv-sidebar-icon">
-              <Calendar size={17} />
-            </span>
-            <span className="cv-sidebar-label">Termin buchen</span>
+            <Calendar size={17} />
+            <span>Termin buchen</span>
           </button>
         </div>
       </aside>

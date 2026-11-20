@@ -35,10 +35,10 @@ export const App: React.FC = () => {
     return 'dark';
   });
 
-  const [sidebarExpanded, setSidebarExpanded] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const [activeCategory, setActiveCategory] = useState<'all' | ServiceCategory>('all');
 
   // Interactive modals
@@ -57,7 +57,7 @@ export const App: React.FC = () => {
     }
   }, [theme]);
 
-  // Support deep hash links (e.g. #ueberblick, #loesungen) on initial load
+  // Support deep hash links on initial load
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, '');
     if (!hash) return;
@@ -77,6 +77,7 @@ export const App: React.FC = () => {
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docHeight > 0 ? scrollY / docHeight : 0);
+      setScrolled(scrollY > 24);
 
       const offset = 180;
       let current = NAV_SECTIONS[0].id;
@@ -146,9 +147,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div
-      className={`cv-app-shell ${sidebarExpanded ? 'has-sidebar-expanded' : ''}`}
-    >
+    <div className="cv-app-shell">
       {/* Top Scroll Progress Line */}
       <div className="cv-top-progress" aria-hidden="true">
         <div
@@ -157,14 +156,26 @@ export const App: React.FC = () => {
         />
       </div>
 
-      {/* Collapsible ArtCraft + Adobe Creative Left Sidebar */}
+      {/* ArtCraft-Style Fixed Top Navigation Bar */}
+      <TopBar
+        theme={theme}
+        activeSection={activeSection}
+        scrolled={scrolled}
+        mobileMenuOpen={mobileMenuOpen}
+        onToggleTheme={toggleTheme}
+        onOpenMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
+        onNavigate={navigateTo}
+        onSelectCategory={(cat) => setActiveCategory(cat)}
+        onSelectService={(srv) => setSelectedService(srv)}
+        onOpenBooking={() => setBookingOpen(true)}
+        onOpenRemote={() => setRemoteOpen(true)}
+      />
+
+      {/* Mobile/Tablet Slide-Over Navigation Drawer */}
       <Sidebar
         activeSection={activeSection}
-        scrollProgress={scrollProgress}
-        expanded={sidebarExpanded}
         mobileOpen={mobileMenuOpen}
         theme={theme}
-        onToggleExpand={() => setSidebarExpanded((prev) => !prev)}
         onCloseMobile={() => setMobileMenuOpen(false)}
         onToggleTheme={toggleTheme}
         onNavigate={navigateTo}
@@ -172,19 +183,8 @@ export const App: React.FC = () => {
         onOpenRemote={() => setRemoteOpen(true)}
       />
 
-      {/* Main Content Stage */}
+      {/* Full-Width Centered Main Stage */}
       <div className="cv-main-frame">
-        <TopBar
-          theme={theme}
-          mobileMenuOpen={mobileMenuOpen}
-          onToggleTheme={toggleTheme}
-          onOpenMobileMenu={() => setMobileMenuOpen((prev) => !prev)}
-          onNavigate={navigateTo}
-          onSelectCategory={(cat) => setActiveCategory(cat)}
-          onSelectService={(srv) => setSelectedService(srv)}
-          onOpenBooking={() => setBookingOpen(true)}
-        />
-
         <main id="main-content">
           <OrbitalHero
             onSelectService={(srv) => setSelectedService(srv)}
@@ -223,7 +223,7 @@ export const App: React.FC = () => {
         />
       </div>
 
-      {/* ArtCraft-inspired Precision Vertical Ruler Side Scroll */}
+      {/* ArtCraft-inspired Precision Vertical Ruler Side Scroll (appears after scroll) */}
       <ScrollRuler />
 
       {/* Modals */}

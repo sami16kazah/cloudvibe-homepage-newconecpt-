@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   ChevronDown,
+  Headphones,
   Menu,
   Moon,
   Phone,
@@ -18,6 +19,8 @@ import { ServiceIcon } from './ServiceIcon';
 
 interface TopBarProps {
   theme: 'dark' | 'light';
+  activeSection: string;
+  scrolled: boolean;
   mobileMenuOpen: boolean;
   onToggleTheme: () => void;
   onOpenMobileMenu: () => void;
@@ -25,12 +28,15 @@ interface TopBarProps {
   onSelectCategory: (cat: ServiceCategory) => void;
   onSelectService: (service: CloudVibeService) => void;
   onOpenBooking: () => void;
+  onOpenRemote: () => void;
 }
 
 type DropdownKey = 'gesundheitswesen' | 'managed' | 'software' | null;
 
 export const TopBar: React.FC<TopBarProps> = ({
   theme,
+  activeSection,
+  scrolled,
   mobileMenuOpen,
   onToggleTheme,
   onOpenMobileMenu,
@@ -38,6 +44,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   onSelectCategory,
   onSelectService,
   onOpenBooking,
+  onOpenRemote,
 }) => {
   const [openMenu, setOpenMenu] = useState<DropdownKey>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -66,38 +73,33 @@ export const TopBar: React.FC<TopBarProps> = ({
   ];
 
   return (
-    <header className="cv-topbar" ref={navRef}>
+    <header
+      className={`cv-topbar ${scrolled ? 'is-scrolled' : ''}`}
+      ref={navRef}
+    >
       <div className="cv-topbar-inner">
-        {/* Left: Mobile Brand + Desktop ArtCraft-Style Hairline Nav */}
+        {/* Left: ArtCraft-Style Bordered Brand Cell + Desktop Nav */}
         <div className="cv-topbar-left">
-          <button
-            type="button"
-            className="cv-icon-btn mobile-only"
-            onClick={onOpenMobileMenu}
-            aria-label="Open main menu"
-            aria-expanded={mobileMenuOpen}
-            aria-controls="cv-sidebar-nav"
-            aria-haspopup="menu"
-            title="Menü öffnen"
-          >
-            <Menu size={19} />
-          </button>
-
           <a
             href="#hero"
-            className="cv-topbar-brand mobile-only"
+            className="cv-topbar-brand-cell"
             onClick={(e) => {
               e.preventDefault();
+              setOpenMenu(null);
               onNavigate('hero');
             }}
+            aria-label="cloudvibe Startseite"
           >
-            <CloudVibeLogo variant="compact" animateBinary={false} />
+            <CloudVibeLogo variant="mark" animateBinary={false} className="cv-topbar-mark" />
+            <span className="cv-topbar-brand-word">
+              cloud<span>vibe</span>
+            </span>
           </a>
 
           <nav className="cv-topbar-nav desktop-only" aria-label="Hauptnavigation">
             <button
               type="button"
-              className="cv-nav-pill is-home"
+              className={`cv-nav-trigger ${activeSection === 'hero' ? 'is-active' : ''}`}
               onClick={() => {
                 setOpenMenu(null);
                 onNavigate('hero');
@@ -113,7 +115,9 @@ export const TopBar: React.FC<TopBarProps> = ({
                 <div key={group.key} className="cv-dropdown-wrap">
                   <button
                     type="button"
-                    className={`cv-nav-trigger ${isOpen ? 'is-open' : ''}`}
+                    className={`cv-nav-trigger ${isOpen ? 'is-open' : ''} ${
+                      activeSection === 'loesungen' && group.key === 'managed' ? 'is-active' : ''
+                    }`}
                     aria-expanded={isOpen}
                     onClick={() => setOpenMenu(isOpen ? null : group.key)}
                   >
@@ -170,7 +174,18 @@ export const TopBar: React.FC<TopBarProps> = ({
 
             <button
               type="button"
-              className="cv-nav-trigger"
+              className={`cv-nav-trigger ${activeSection === 'architektur' ? 'is-active' : ''}`}
+              onClick={() => {
+                setOpenMenu(null);
+                onNavigate('architektur');
+              }}
+            >
+              ARCHITEKTUR
+            </button>
+
+            <button
+              type="button"
+              className={`cv-nav-trigger ${activeSection === 'vorteile' ? 'is-active' : ''}`}
               onClick={() => {
                 setOpenMenu(null);
                 onNavigate('vorteile');
@@ -178,19 +193,21 @@ export const TopBar: React.FC<TopBarProps> = ({
             >
               VORTEILE
             </button>
+
             <button
               type="button"
-              className="cv-nav-trigger"
+              className={`cv-nav-trigger ${activeSection === 'referenzen' ? 'is-active' : ''}`}
               onClick={() => {
                 setOpenMenu(null);
                 onNavigate('referenzen');
               }}
             >
-              REFERENZEN
+              TEAM
             </button>
+
             <button
               type="button"
-              className="cv-nav-trigger"
+              className={`cv-nav-trigger ${activeSection === 'kontakt' ? 'is-active' : ''}`}
               onClick={() => {
                 setOpenMenu(null);
                 onNavigate('kontakt');
@@ -201,11 +218,11 @@ export const TopBar: React.FC<TopBarProps> = ({
           </nav>
         </div>
 
-        {/* Right: Support Phone + Theme Toggle + Primary CTA */}
+        {/* Right: ArtCraft-Style Hairline Utility Cells + Full-Height CTA */}
         <div className="cv-topbar-right">
           <a
             href={CLOUDVIBE_CONTACT.supportPhoneHref}
-            className="cv-phone-chip desktop-wide-only"
+            className="cv-topbar-cell cv-topbar-phone desktop-wide-only"
             title="Support-Hotline anrufen"
           >
             <Phone size={13} />
@@ -214,20 +231,38 @@ export const TopBar: React.FC<TopBarProps> = ({
 
           <button
             type="button"
-            className="cv-theme-toggle"
+            className="cv-topbar-cell desktop-only"
+            onClick={onOpenRemote}
+            title="Fernwartung starten"
+          >
+            <Headphones size={14} />
+            <span>FERNWARTUNG</span>
+          </button>
+
+          <button
+            type="button"
+            className="cv-topbar-cell cv-topbar-theme-cell"
             onClick={onToggleTheme}
             aria-label={theme === 'dark' ? 'Zu hellem Design wechseln' : 'Zu dunklem Design wechseln'}
             title={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}
           >
-            <span className="cv-theme-toggle-track">
-              {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
-            </span>
-            <span className="cv-theme-toggle-label">
-              {theme === 'dark' ? 'LIGHT' : 'DARK'}
-            </span>
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
-          <button type="button" className="cv-topbar-cta" onClick={onOpenBooking}>
+          <button
+            type="button"
+            className="cv-topbar-cell cv-topbar-menu-btn mobile-only"
+            onClick={onOpenMobileMenu}
+            aria-label="Open main menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="cv-sidebar-nav"
+            aria-haspopup="menu"
+            title="Menü öffnen"
+          >
+            <Menu size={19} />
+          </button>
+
+          <button type="button" className="cv-topbar-cta-flush" onClick={onOpenBooking}>
             <span>BERATUNG BUCHEN</span>
             <ArrowUpRight size={14} />
           </button>
