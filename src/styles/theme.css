@@ -3270,19 +3270,20 @@ a.cv-contact-tile:hover {
   background: rgba(16, 16, 20, 0.45);
 }
 
-/* Adobe "Ausgewählte Lösungen" Product Icon Strip */
+/* Adobe-Style Centered "Ausgewählte Lösungen" Strip */
 .cv-footer-featured-strip {
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--bg-card);
-  padding: 18px 0;
+  padding: 20px 0;
 }
 
 .cv-featured-strip-inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  justify-content: center;
+  gap: 14px 20px;
 }
 
 .cv-featured-label {
@@ -3473,10 +3474,104 @@ a.cv-contact-tile:hover {
   color: var(--cv-green);
 }
 
-/* Bottom Adobe Utility Bar */
+/* Monumental Adobe-Inspired Edge-to-Edge Animated CloudVibe Showcase */
+.cv-footer-monument {
+  position: relative;
+  overflow: hidden;
+  padding: 54px 0 46px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.cv-monument-aurora {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      520px 240px at var(--footer-px, 50%) 52%,
+      rgba(46, 179, 41, 0.2),
+      transparent 72%
+    ),
+    radial-gradient(
+      460px 220px at calc(100% - var(--footer-px, 50%)) 60%,
+      rgba(37, 99, 194, 0.16),
+      transparent 72%
+    );
+  transition: background 120ms linear;
+}
+
+:root[data-theme='light'] .cv-monument-aurora {
+  background:
+    radial-gradient(
+      520px 240px at var(--footer-px, 50%) 52%,
+      rgba(46, 179, 41, 0.14),
+      transparent 72%
+    ),
+    radial-gradient(
+      460px 220px at calc(100% - var(--footer-px, 50%)) 60%,
+      rgba(24, 80, 152, 0.11),
+      transparent 72%
+    );
+}
+
+.cv-monument-waves {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+}
+
+.cv-monument-wave-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cv-wave-stroke-1 {
+  stroke-dasharray: 28 14;
+  animation: cvDashMove 6s linear infinite;
+}
+
+.cv-wave-stroke-2 {
+  stroke-dasharray: 44 18;
+  animation: cvDashMove 9s linear infinite reverse;
+}
+
+.cv-wave-stroke-3 {
+  stroke-dasharray: 18 12;
+  animation: cvDashMove 12s linear infinite;
+}
+
+.cv-monument-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.cv-monument-logo-svg {
+  width: 100%;
+  max-width: 1020px;
+  height: auto;
+  display: block;
+  overflow: visible;
+  transform: translateY(14px) scale(0.985);
+  transition: transform 720ms var(--ease-spring);
+}
+
+.cv-adobe-footer.is-visible .cv-monument-logo-svg {
+  transform: translateY(0) scale(1);
+}
+
+.cv-monument-cloud-path {
+  stroke-dasharray: 560;
+  stroke-dashoffset: 0;
+}
+
 .cv-footer-utility {
   padding: 18px 0;
-  border-bottom: 1px solid var(--line);
+  background: var(--bg-elevated);
 }
 
 .cv-footer-utility-inner {
@@ -3553,96 +3648,11 @@ a.cv-contact-tile:hover {
   color: var(--cv-green);
 }
 
-/* Kinetic Binary-Cloud Footer Horizon */
-.cv-footer-kinetic-horizon {
-  position: relative;
-  padding: 26px 0 34px;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.cv-horizon-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    420px 140px at var(--footer-px, 50%) 100%,
-    rgba(46, 179, 41, 0.22),
-    transparent 75%
-  );
-  pointer-events: none;
-}
-
-.cv-horizon-binary-stream {
-  display: flex;
-  width: max-content;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  color: var(--cv-green);
-  opacity: 0.36;
-  white-space: nowrap;
-  animation: cvMarquee 44s linear infinite;
-  margin-bottom: 18px;
-}
-
-.cv-horizon-wordmark-row {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 28px;
-  padding-top: 8px;
-}
-
-.cv-horizon-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding-bottom: 6px;
-}
-
-.cv-horizon-slogan {
-  font-family: var(--font-brand);
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 600;
-  color: var(--ink-strong);
-  letter-spacing: -0.01em;
-}
-
-.cv-horizon-coords {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--ink-subtle);
-}
-
-.cv-horizon-lockup {
-  position: relative;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  user-select: none;
-}
-
-.cv-horizon-cloud-crown {
-  width: clamp(92px, 12vw, 152px);
-  height: auto;
-  margin-left: clamp(8px, 1.4vw, 18px);
-  margin-bottom: -6px;
-  display: block;
-}
-
-.cv-horizon-giant-text {
-  font-family: var(--font-brand);
-  font-size: clamp(36px, 6.2vw, 76px);
-  font-weight: 700;
-  line-height: 0.94;
-  letter-spacing: -0.03em;
-  background: linear-gradient(90deg, var(--ink-strong) 0%, var(--cv-green) 55%, var(--cv-cloud-blue) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Monumental responsive spacing */
+@media (max-width: 767px) {
+  .cv-footer-monument {
+    padding: 36px 0 32px;
+  }
 }
 
 /* ==========================================================================

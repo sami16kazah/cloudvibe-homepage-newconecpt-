@@ -15,7 +15,6 @@ import {
   type CloudVibeService,
   type ServiceCategory,
 } from '../data/cloudvibeData';
-import { CloudVibeLogo } from './CloudVibeLogo';
 import { ServiceIcon } from './ServiceIcon';
 
 export type LegalTopic = 'impressum' | 'datenschutz' | 'agb' | 'cookies';
@@ -29,6 +28,30 @@ interface AdobeFooterProps {
   onOpenLegal: (topic: LegalTopic) => void;
 }
 
+const FOOTER_BINARY: { x: number; y: number; v: string }[] = [
+  { x: 246, y: 42, v: '1' },
+  { x: 184, y: 65, v: '1' },
+  { x: 226, y: 65, v: '0' },
+  { x: 246, y: 65, v: '0' },
+  { x: 266, y: 65, v: '1' },
+  { x: 142, y: 88, v: '0' },
+  { x: 163, y: 88, v: '1' },
+  { x: 184, y: 88, v: '0' },
+  { x: 205, y: 88, v: '0' },
+  { x: 226, y: 88, v: '1' },
+  { x: 246, y: 88, v: '1' },
+  { x: 266, y: 88, v: '0' },
+  { x: 287, y: 88, v: '0' },
+  { x: 142, y: 111, v: '1' },
+  { x: 163, y: 111, v: '0' },
+  { x: 184, y: 111, v: '1' },
+  { x: 205, y: 111, v: '1' },
+  { x: 226, y: 111, v: '0' },
+  { x: 246, y: 111, v: '0' },
+  { x: 266, y: 111, v: '0' },
+  { x: 287, y: 111, v: '1' },
+];
+
 export const AdobeFooter: React.FC<AdobeFooterProps> = ({
   onSelectService,
   onSelectCategory,
@@ -39,6 +62,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
 }) => {
   const [openAccordion, setOpenAccordion] = useState<string | null>('gesundheitswesen');
   const [pointerX, setPointerX] = useState(50);
+  const [pulseBit, setPulseBit] = useState(0);
   const footerRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -51,10 +75,21 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
       (entries) => {
         if (entries[0]?.isIntersecting) setIsVisible(true);
       },
-      { threshold: 0.08 },
+      { threshold: 0.06 },
     );
     io.observe(el);
     return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+    const id = window.setInterval(() => {
+      setPulseBit((p) => (p + 1) % FOOTER_BINARY.length);
+    }, 520);
+    return () => window.clearInterval(id);
   }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
@@ -79,7 +114,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
       onMouseMove={handleMouseMove}
       style={{ '--footer-px': `${pointerX}%` } as React.CSSProperties}
     >
-      {/* Adobe-inspired Animated Aurora Gradient Ribbon CTA Banner */}
+      {/* 1. Flowing CloudVibe Aurora CTA Banner */}
       <div className="cv-footer-aurora-banner">
         <div className="cv-aurora-mesh" aria-hidden="true" />
         <img
@@ -110,35 +145,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
         </div>
       </div>
 
-      {/* Adobe-style "Ausgewählte Lösungen" Interactive Featured Product Strip */}
-      <div className="cv-footer-featured-strip">
-        <div className="cv-container cv-featured-strip-inner">
-          <span className="cv-featured-label">Ausgewählte Lösungen</span>
-          <div className="cv-featured-products">
-            {featuredProducts.map((srv, idx) => (
-              <button
-                key={srv.id}
-                type="button"
-                className="cv-featured-chip"
-                style={
-                  {
-                    '--chip-accent': srv.accent,
-                    transitionDelay: `${idx * 45}ms`,
-                  } as React.CSSProperties
-                }
-                onClick={() => onSelectService(srv)}
-              >
-                <span className="cv-featured-chip-icon">
-                  <ServiceIcon iconKey={srv.iconKey} size={15} />
-                </span>
-                <span>{srv.shortName}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Structured Adobe 5-Column Sitemap (Accordion on Mobile) */}
+      {/* 2. Adobe-Style Structured 5-Column Sitemap (Accordion on Mobile) */}
       <div className="cv-footer-sitemap">
         <div className="cv-container">
           <div className="cv-sitemap-grid">
@@ -283,7 +290,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
                     className="cv-footer-link"
                     onClick={() => onNavigate('referenzen')}
                   >
-                    Referenzen Gesundheitswesen
+                    Team &amp; Referenzen
                   </button>
                 </li>
                 <li>
@@ -345,7 +352,173 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
         </div>
       </div>
 
-      {/* Adobe-style Bottom Utility Bar: Region, Legal Links & Magnetic Back-to-Top */}
+      {/* 3. Adobe-Style Centered "Ausgewählte Lösungen" Product Bar */}
+      <div className="cv-footer-featured-strip">
+        <div className="cv-container cv-featured-strip-inner">
+          <span className="cv-featured-label">Ausgewählte Lösungen</span>
+          <div className="cv-featured-products">
+            {featuredProducts.map((srv, idx) => (
+              <button
+                key={srv.id}
+                type="button"
+                className="cv-featured-chip"
+                style={
+                  {
+                    '--chip-accent': srv.accent,
+                    transitionDelay: `${idx * 45}ms`,
+                  } as React.CSSProperties
+                }
+                onClick={() => onSelectService(srv)}
+              >
+                <span className="cv-featured-chip-icon">
+                  <ServiceIcon iconKey={srv.iconKey} size={15} />
+                </span>
+                <span>{srv.shortName}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Monumental Adobe-Inspired Full-Width Animated CloudVibe Brand Showcase */}
+      <div className="cv-footer-monument" aria-label="cloudvibe — Your IT. Our business.">
+        <div className="cv-monument-aurora" aria-hidden="true" />
+        <div className="cv-monument-waves" aria-hidden="true">
+          <svg viewBox="0 0 1440 260" preserveAspectRatio="none" className="cv-monument-wave-svg">
+            <path
+              d="M0 190 C280 110, 520 250, 820 155 C1080 75, 1280 210, 1440 130"
+              fill="none"
+              stroke="var(--cv-green)"
+              strokeOpacity="0.22"
+              strokeWidth="1.4"
+              className="cv-wave-stroke-1"
+            />
+            <path
+              d="M0 215 C340 145, 620 265, 930 165 C1180 85, 1320 220, 1440 155"
+              fill="none"
+              stroke="var(--cv-cloud-blue)"
+              strokeOpacity="0.26"
+              strokeWidth="1.2"
+              className="cv-wave-stroke-2"
+            />
+            <path
+              d="M0 160 C310 230, 560 95, 860 185 C1140 255, 1310 120, 1440 185"
+              fill="none"
+              stroke="var(--cv-orange)"
+              strokeOpacity="0.14"
+              strokeWidth="1"
+              className="cv-wave-stroke-3"
+            />
+          </svg>
+        </div>
+
+        <div className="cv-container cv-monument-inner">
+          <svg
+            viewBox="0 0 980 315"
+            className="cv-monument-logo-svg"
+            role="img"
+            aria-label="cloudvibe — Your IT. Our business."
+          >
+            <defs>
+              <linearGradient id="cv-monument-word-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--ink-strong)" />
+                <stop offset="48%" stopColor="var(--ink-strong)" />
+                <stop offset="76%" stopColor="var(--cv-green)" />
+                <stop offset="100%" stopColor="var(--cv-cloud-blue)" />
+              </linearGradient>
+              <linearGradient id="cv-monument-line-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--cv-cloud-blue)" stopOpacity="0.15" />
+                <stop offset="55%" stopColor="var(--cv-green)" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="var(--cv-orange)" stopOpacity="0.7" />
+              </linearGradient>
+              <filter id="cv-monument-glow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="2.6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
+            {/* Sculpted Cloud Arc positioned cleanly over "cloud" */}
+            <path
+              d="M116 105 C115 74, 135 53, 162 49 C172 18, 203 5, 232 12 C250 16, 262 26, 270 38 C291 28, 320 44, 323 71 C338 78, 343 97, 334 111"
+              fill="none"
+              stroke="var(--cv-cloud-blue)"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="cv-monument-cloud-path"
+            />
+
+            {/* Live Shimmering CloudVibe Binary Matrix */}
+            {FOOTER_BINARY.map((bit, i) => {
+              const hot =
+                i === pulseBit ||
+                i === (pulseBit + 6) % FOOTER_BINARY.length ||
+                i === (pulseBit + 13) % FOOTER_BINARY.length;
+              return (
+                <text
+                  key={`${bit.x}-${bit.y}`}
+                  x={bit.x}
+                  y={bit.y}
+                  textAnchor="middle"
+                  fontFamily="'Geist Mono', monospace"
+                  fontWeight="700"
+                  fontSize="19"
+                  fill={hot ? 'var(--cv-green-bright)' : 'var(--cv-green)'}
+                  filter={hot ? 'url(#cv-monument-glow)' : undefined}
+                  style={{ transition: 'fill 260ms ease, opacity 260ms ease', opacity: hot ? 1 : 0.85 }}
+                >
+                  {bit.v}
+                </text>
+              );
+            })}
+
+            {/* Monumental Edge-to-Edge "cloudvibe" Wordmark */}
+            <text
+              x="490"
+              y="236"
+              textAnchor="middle"
+              fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
+              fontWeight="600"
+              fontSize="158"
+              letterSpacing="-3.5"
+              fill="url(#cv-monument-word-grad)"
+              className="cv-monument-wordmark"
+            >
+              cloudvibe
+            </text>
+
+            {/* Subtle Horizontal Architectural Accent Line Leading into Official Slogan */}
+            <line
+              x1="68"
+              y1="286"
+              x2="455"
+              y2="286"
+              stroke="url(#cv-monument-line-grad)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+
+            {/* Official Slogan Tucked Directly Beneath "vibe" */}
+            <text
+              x="912"
+              y="298"
+              textAnchor="end"
+              fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
+              fontWeight="500"
+              fontSize="39"
+              letterSpacing="0.8"
+              fill="var(--ink-muted)"
+            >
+              Your IT. Our business.
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      {/* 5. Adobe-Style Bottom Utility & Legal Bar */}
       <div className="cv-footer-utility">
         <div className="cv-container cv-footer-utility-inner">
           <div className="cv-utility-left">
@@ -354,7 +527,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
               <span>Deutschland · Deutsch</span>
             </span>
             <span className="cv-copyright">
-              © {new Date().getFullYear()} {CLOUDVIBE_CONTACT.company}
+              © {new Date().getFullYear()} {CLOUDVIBE_CONTACT.company} · Goch
             </span>
           </div>
 
@@ -382,28 +555,6 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
             <span>NACH OBEN</span>
             <ArrowUp size={14} />
           </button>
-        </div>
-      </div>
-
-      {/* Giant Kinetic CloudVibe Signature Horizon */}
-      <div className="cv-footer-kinetic-horizon" aria-hidden="true">
-        <div className="cv-horizon-glow" />
-        <div className="cv-horizon-binary-stream">
-          <span>01001100 10110001 · YOUR IT. OUR BUSINESS. · 01001100 10110001 · GOCH · TELEMATIKINFRASTRUKTUR · MANAGED SERVICES · </span>
-          <span>01001100 10110001 · YOUR IT. OUR BUSINESS. · 01001100 10110001 · GOCH · TELEMATIKINFRASTRUKTUR · MANAGED SERVICES · </span>
-        </div>
-        <div className="cv-container cv-horizon-wordmark-row">
-          <div className="cv-horizon-meta">
-            <span className="cv-horizon-slogan">Your IT. Our business.</span>
-            <span className="cv-horizon-coords">
-              51.6814° N, 6.1619° E · GOCH · TELEKONNEKT-PARTNER
-            </span>
-          </div>
-
-          <div className="cv-horizon-lockup">
-            <CloudVibeLogo variant="mark" className="cv-horizon-cloud-crown" />
-            <span className="cv-horizon-giant-text">cloudvibe.de</span>
-          </div>
         </div>
       </div>
     </footer>
