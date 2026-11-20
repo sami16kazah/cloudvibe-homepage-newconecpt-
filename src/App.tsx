@@ -11,6 +11,7 @@ import {
 } from './components/Modals';
 import { OrbitalHero } from './components/OrbitalHero';
 import { ReferencesAndTeam } from './components/ReferencesAndTeam';
+import { ScrollRuler } from './components/ScrollRuler';
 import { ServiceGrid } from './components/ServiceGrid';
 import { ServiceOverview } from './components/ServiceOverview';
 import { Sidebar } from './components/Sidebar';
@@ -208,6 +209,9 @@ export const App: React.FC = () => {
           onOpenLegal={(topic) => setLegalTopic(topic)}
         />
       </div>
+
+      {/* ArtCraft-inspired Precision Vertical Ruler Side Scroll */}
+      <ScrollRuler />
 
       {/* Modals */}
       {selectedService && (

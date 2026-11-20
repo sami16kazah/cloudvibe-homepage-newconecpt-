@@ -102,6 +102,17 @@ html {
   background-color: var(--bg);
 }
 
+/* ArtCraft-style native scrollbar hide when precision side ruler is active */
+html[data-ruler='on'] {
+  scrollbar-width: none;
+}
+
+html[data-ruler='on']::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -165,7 +176,263 @@ textarea:focus-visible {
   flex: 1;
   min-width: 0;
   margin-left: var(--sidebar-w);
+  padding-right: 52px;
   transition: margin-left 280ms var(--ease-spring);
+}
+
+/* ==========================================================================
+   ArtCraft-Inspired Precision Right-Edge Scroll Ruler
+   ========================================================================== */
+
+.cv-scroll-ruler {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52px;
+  z-index: 88;
+  cursor: crosshair;
+  user-select: none;
+  touch-action: none;
+  background: color-mix(in srgb, var(--bg-sidebar) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-left: 1px solid var(--line);
+  transition: background-color 220ms ease, border-color 220ms ease;
+}
+
+.cv-scroll-ruler.is-active,
+.cv-scroll-ruler.is-dragging {
+  background: color-mix(in srgb, var(--bg-sidebar) 96%, transparent);
+  border-left-color: var(--line-strong);
+}
+
+.cv-scroll-ruler.is-dragging {
+  cursor: ns-resize;
+}
+
+.cv-ruler-spine {
+  position: absolute;
+  top: var(--topbar-h);
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.cv-ruler-ticks,
+.cv-ruler-anchors {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cv-ruler-tick {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.cv-ruler-tick-line {
+  width: 7px;
+  height: 1px;
+  background: var(--orbit-tick);
+  transition: width 180ms ease, background-color 180ms ease;
+}
+
+.cv-ruler-tick.is-major .cv-ruler-tick-line {
+  width: 14px;
+  background: var(--line-strong);
+}
+
+.cv-scroll-ruler.is-active .cv-ruler-tick.is-major .cv-ruler-tick-line {
+  width: 17px;
+}
+
+.cv-ruler-tick-num {
+  position: absolute;
+  right: 19px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  line-height: 1;
+  color: var(--ink-subtle);
+  opacity: 0.72;
+  transition: opacity 180ms ease;
+}
+
+.cv-scroll-ruler.is-active .cv-ruler-tick-num {
+  opacity: 0.95;
+}
+
+.cv-ruler-anchor {
+  position: absolute;
+  top: 0;
+  left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: -5px;
+}
+
+.cv-ruler-anchor-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.cv-ruler-anchor.is-passed .cv-ruler-anchor-dot {
+  background: var(--cv-green);
+}
+
+.cv-ruler-anchor-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--ink-subtle);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.cv-scroll-ruler.is-active .cv-ruler-anchor-label {
+  opacity: 0.8;
+}
+
+/* Viewport Window Minimap Bracket */
+.cv-ruler-viewport-bracket {
+  position: absolute;
+  top: 0;
+  left: 2px;
+  right: 2px;
+  border: 1px solid color-mix(in srgb, var(--cv-green) 50%, transparent);
+  background: color-mix(in srgb, var(--cv-green) 9%, transparent);
+  border-radius: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.cv-scroll-ruler.is-active .cv-ruler-viewport-bracket {
+  opacity: 1;
+}
+
+/* Pointer Crosshair Ghost + Section Preview Pill */
+.cv-ruler-ghost {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cv-ruler-ghost-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--ink-subtle);
+  opacity: 0.65;
+}
+
+.cv-ruler-ghost-tip {
+  position: absolute;
+  right: 58px;
+  top: -12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 10px;
+  background: var(--bg-invert);
+  color: var(--fg-invert);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  box-shadow: var(--shadow-dropdown);
+}
+
+.cv-ruler-ghost-tip em {
+  font-style: normal;
+  color: var(--cv-green);
+  font-weight: 700;
+}
+
+.cv-ruler-ghost-tip span {
+  opacity: 0.68;
+}
+
+/* Live Glowing Needle + Mechanical Rolling Odometer Digits */
+.cv-ruler-needle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.cv-ruler-needle-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--cv-green);
+  box-shadow: 0 0 8px var(--cv-green);
+}
+
+.cv-ruler-readout {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 4px;
+  border-radius: 2px;
+  background: var(--bg-sidebar);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cv-green);
+  line-height: 1;
+}
+
+.cv-ruler-needle.is-above .cv-ruler-readout {
+  top: -17px;
+}
+
+.cv-ruler-digits {
+  height: 1em;
+  line-height: 1;
+  display: inline-flex;
+  overflow: hidden;
+}
+
+.cv-ruler-digit-col {
+  display: flex;
+  flex-direction: column;
+  transition: transform 280ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.cv-ruler-digit-col > span {
+  height: 1em;
+  display: block;
+}
+
+.cv-ruler-pct-sign {
+  margin-left: 1px;
+  opacity: 0.8;
 }
 
 .cv-app-shell.has-sidebar-expanded .cv-main-frame {
@@ -3580,6 +3847,7 @@ a.cv-contact-tile:hover {
   .cv-main-frame,
   .cv-app-shell.has-sidebar-expanded .cv-main-frame {
     margin-left: 0;
+    padding-right: 0;
   }
 
   .cv-sidebar {
