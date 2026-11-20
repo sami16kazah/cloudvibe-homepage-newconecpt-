@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  Award,
+  ArrowRight,
   Calendar,
-  Compass,
-  Cpu,
-  Grid2x2,
+  ChevronDown,
   Headphones,
-  Home,
-  Mail,
   Moon,
-  ShieldCheck,
+  Phone,
   Sun,
-  X,
 } from 'lucide-react';
-import { NAV_SECTIONS } from '../data/cloudvibeData';
-import { CloudVibeLogo } from './CloudVibeLogo';
+import {
+  CLOUDVIBE_CONTACT,
+  SERVICES,
+  type CloudVibeService,
+  type ServiceCategory,
+} from '../data/cloudvibeData';
+import { ServiceIcon } from './ServiceIcon';
 
 interface SidebarProps {
   activeSection: string;
@@ -23,21 +23,27 @@ interface SidebarProps {
   onCloseMobile: () => void;
   onToggleTheme: () => void;
   onNavigate: (id: string) => void;
+  onSelectService: (service: CloudVibeService) => void;
+  onSelectCategory: (cat: ServiceCategory) => void;
   onOpenBooking: () => void;
   onOpenRemote: () => void;
 }
 
-const SECTION_ICONS: Record<string, React.ReactNode> = {
-  hero: <Home size={18} />,
-  ueberblick: <Compass size={18} />,
-  loesungen: <Grid2x2 size={18} />,
-  architektur: <Cpu size={18} />,
-  vorteile: <ShieldCheck size={18} />,
-  referenzen: <Award size={18} />,
-  kontakt: <Mail size={18} />,
-};
+const MOBILE_GROUPS: { key: ServiceCategory; label: string }[] = [
+  { key: 'gesundheitswesen', label: 'Gesundheitswesen & TI' },
+  { key: 'managed', label: 'Managed Services' },
+  { key: 'software', label: 'DATEV & SelectLine' },
+];
 
-/* Mobile & Tablet Slide-Over Navigation Drawer (hidden on desktop where fixed TopBar + ScrollRuler handle navigation cleanly) */
+const DIRECT_LINKS = [
+  { id: 'ueberblick', label: 'Überblick' },
+  { id: 'architektur', label: 'Live-Architektur' },
+  { id: 'vorteile', label: 'Deine Vorteile' },
+  { id: 'referenzen', label: 'Team & Referenzen' },
+  { id: 'kontakt', label: 'Kontakt & Goch' },
+];
+
+/* Adobe-Style Full-Width Mobile & Tablet Drop-Down Accordion Menu Sheet */
 export const Sidebar: React.FC<SidebarProps> = ({
   activeSection,
   mobileOpen,
@@ -45,9 +51,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onCloseMobile,
   onToggleTheme,
   onNavigate,
+  onSelectService,
+  onSelectCategory,
   onOpenBooking,
   onOpenRemote,
 }) => {
+  const [openGroup, setOpenGroup] = useState<ServiceCategory | null>('gesundheitswesen');
+
   return (
     <>
       <div
@@ -58,90 +68,140 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
       <aside
         id="cv-sidebar-nav"
-        className={`cv-mobile-drawer ${mobileOpen ? 'is-mobile-open' : ''}`}
+        className={`cv-adobe-mobile-sheet ${mobileOpen ? 'is-mobile-open' : ''}`}
         aria-label="Mobile Navigation"
         role={mobileOpen ? 'dialog' : undefined}
         aria-modal={mobileOpen ? true : undefined}
       >
-        <div className="cv-drawer-head">
-          <a
-            href="#hero"
-            className="cv-drawer-brand"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('hero');
-              onCloseMobile();
-            }}
-            aria-label="cloudvibe — Your IT. Our business."
-          >
-            <CloudVibeLogo variant="nav" animateBinary={false} />
-          </a>
+        <div className="cv-adobe-sheet-scroll">
+          {/* Expandable Adobe-Style Service Category Accordions */}
+          <div className="cv-adobe-accordions">
+            {MOBILE_GROUPS.map((group) => {
+              const isOpen = openGroup === group.key;
+              const items = SERVICES.filter((s) => s.category === group.key);
+              return (
+                <div
+                  key={group.key}
+                  className={`cv-adobe-acc-item ${isOpen ? 'is-open' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="cv-adobe-acc-trigger"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpenGroup(isOpen ? null : group.key)}
+                  >
+                    <span>{group.label}</span>
+                    <ChevronDown size={17} className="cv-adobe-acc-chevron" />
+                  </button>
 
-          <button
-            type="button"
-            className="cv-sidebar-collapse-btn"
-            onClick={onCloseMobile}
-            aria-label="Menü schließen"
-          >
-            <X size={18} />
-          </button>
-        </div>
+                  {isOpen && (
+                    <div className="cv-adobe-acc-body">
+                      {items.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className="cv-adobe-service-row"
+                          onClick={() => {
+                            onSelectService(item);
+                            onCloseMobile();
+                          }}
+                        >
+                          <span
+                            className="cv-adobe-service-badge"
+                            style={{ background: item.accentSoft, color: item.accent }}
+                          >
+                            <ServiceIcon iconKey={item.iconKey} size={16} />
+                          </span>
+                          <span className="cv-adobe-service-text">
+                            <strong>{item.name}</strong>
+                            <small>{item.tagline}</small>
+                          </span>
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        className="cv-adobe-acc-all"
+                        onClick={() => {
+                          onSelectCategory(group.key);
+                          onNavigate('loesungen');
+                          onCloseMobile();
+                        }}
+                      >
+                        <span>Alle {group.label} ansehen</span>
+                        <ArrowRight size={14} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
 
-        <nav className="cv-drawer-nav" aria-label="Abschnitte">
-          {NAV_SECTIONS.map((sec) => {
-            const isActive = activeSection === sec.id;
-            return (
+          {/* Clean Direct Section Links */}
+          <nav className="cv-adobe-direct-links" aria-label="Abschnitte">
+            {DIRECT_LINKS.map((link) => (
               <button
-                key={sec.id}
+                key={link.id}
                 type="button"
-                className={`cv-drawer-item ${isActive ? 'is-active' : ''}`}
+                className={`cv-adobe-link-row ${activeSection === link.id ? 'is-active' : ''}`}
                 onClick={() => {
-                  onNavigate(sec.id);
+                  onNavigate(link.id);
                   onCloseMobile();
                 }}
-                aria-current={isActive ? 'location' : undefined}
               >
-                <span className="cv-sidebar-icon">{SECTION_ICONS[sec.id]}</span>
-                <span>{sec.label}</span>
+                <span>{link.label}</span>
+                <ArrowRight size={15} />
               </button>
-            );
-          })}
-        </nav>
+            ))}
+          </nav>
 
-        <div className="cv-drawer-foot">
-          <button
-            type="button"
-            className="cv-drawer-action"
-            onClick={() => {
-              onOpenRemote();
-              onCloseMobile();
-            }}
-          >
-            <Headphones size={17} />
-            <span>Fernwartung</span>
-          </button>
+          {/* Bottom Utility Actions (Hotline, Fernwartung, Theme, Primary Pill CTA) */}
+          <div className="cv-adobe-sheet-foot">
+            <div className="cv-adobe-quick-grid">
+              <a
+                href={CLOUDVIBE_CONTACT.supportPhoneHref}
+                className="cv-adobe-quick-btn"
+              >
+                <Phone size={15} />
+                <span>Support anrufen</span>
+              </a>
+              <button
+                type="button"
+                className="cv-adobe-quick-btn"
+                onClick={() => {
+                  onOpenRemote();
+                  onCloseMobile();
+                }}
+              >
+                <Headphones size={15} />
+                <span>Fernwartung</span>
+              </button>
+            </div>
 
-          <button
-            type="button"
-            className="cv-drawer-action"
-            onClick={onToggleTheme}
-            aria-label={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
-          >
-            {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-            <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
-          </button>
+            <div className="cv-adobe-sheet-actions">
+              <button
+                type="button"
+                className="cv-adobe-theme-pill"
+                onClick={onToggleTheme}
+                aria-label={theme === 'dark' ? 'Helles Design aktivieren' : 'Dunkles Design aktivieren'}
+              >
+                {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+                <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+              </button>
 
-          <button
-            type="button"
-            className="cv-drawer-cta"
-            onClick={() => {
-              onOpenBooking();
-              onCloseMobile();
-            }}
-          >
-            <Calendar size={17} />
-            <span>Termin buchen</span>
-          </button>
+              <button
+                type="button"
+                className="cv-adobe-primary-pill"
+                onClick={() => {
+                  onOpenBooking();
+                  onCloseMobile();
+                }}
+              >
+                <Calendar size={15} />
+                <span>Beratung vereinbaren</span>
+              </button>
+            </div>
+          </div>
         </div>
       </aside>
     </>

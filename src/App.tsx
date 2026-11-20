@@ -180,7 +180,7 @@ export const App: React.FC = () => {
         onOpenRemote={() => setRemoteOpen(true)}
       />
 
-      {/* Mobile/Tablet Slide-Over Navigation Drawer */}
+      {/* Adobe-Style Mobile/Tablet Full-Width Accordion Menu Sheet */}
       <Sidebar
         activeSection={activeSection}
         mobileOpen={mobileMenuOpen}
@@ -188,6 +188,8 @@ export const App: React.FC = () => {
         onCloseMobile={() => setMobileMenuOpen(false)}
         onToggleTheme={toggleTheme}
         onNavigate={navigateTo}
+        onSelectService={(srv) => setSelectedService(srv)}
+        onSelectCategory={(cat) => setActiveCategory(cat)}
         onOpenBooking={() => setBookingOpen(true)}
         onOpenRemote={() => setRemoteOpen(true)}
       />

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 interface CloudVibeLogoProps {
-  variant?: 'full' | 'nav' | 'compact' | 'mark';
+  variant?: 'full' | 'nav' | 'nav-animated' | 'compact' | 'mark';
   animateBinary?: boolean;
+  expanded?: boolean;
   className?: string;
 }
 
@@ -48,6 +49,7 @@ export const OFFICIAL_CLOUD_PATH =
 export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
   variant = 'full',
   animateBinary = true,
+  expanded = false,
   className = '',
 }) => {
   const [pulseIndex, setPulseIndex] = useState(0);
@@ -105,6 +107,72 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
           );
         })}
       </svg>
+    );
+  }
+
+  if (variant === 'nav-animated') {
+    return (
+      <span
+        className={`cv-logo-nav-anim ${expanded ? 'is-expanded' : ''} ${className}`}
+        role="img"
+        aria-label="cloudvibe — Your IT. Our business."
+      >
+        <svg viewBox="0 0 600 280" className="cv-logo-nav-anim-svg" aria-hidden="true">
+          {/* Same official cloud & binary group: centered & enlarged in hero, glides cleanly into exact l..d slot on scroll */}
+          <g className="cv-nav-anim-cloud-group">
+            <path
+              d={OFFICIAL_CLOUD_PATH}
+              fill="none"
+              stroke="var(--cv-cloud-blue)"
+              strokeWidth="12"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            {OFFICIAL_BINARY.map((bit) => (
+              <text
+                key={`${bit.x}-${bit.y}`}
+                x={bit.x}
+                y={bit.y}
+                textAnchor="middle"
+                fontFamily="'Geist Mono', monospace"
+                fontWeight="700"
+                fontSize="18.5"
+                fill="var(--cv-green)"
+              >
+                {bit.value}
+              </text>
+            ))}
+          </g>
+
+          {/* Official monochrome "cloudvibe" + gray slogan wiping smoothly out to the right */}
+          <g className="cv-nav-anim-text-group">
+            <text
+              x="4"
+              y="216"
+              textLength="588"
+              lengthAdjust="spacing"
+              fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
+              fontWeight="600"
+              fontSize="126"
+              fill="var(--ink-strong)"
+            >
+              cloudvibe
+            </text>
+            <text
+              x="592"
+              y="264"
+              textAnchor="end"
+              fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
+              fontWeight="400"
+              fontSize="38"
+              letterSpacing="0.5"
+              fill="var(--ink-muted)"
+            >
+              Your IT. Our business.
+            </text>
+          </g>
+        </svg>
+      </span>
     );
   }
 

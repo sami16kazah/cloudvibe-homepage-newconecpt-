@@ -7,6 +7,7 @@ import {
   Moon,
   Phone,
   Sun,
+  X,
 } from 'lucide-react';
 import {
   CLOUDVIBE_CONTACT,
@@ -76,15 +77,28 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <header
-      className={`cv-topbar ${scrolled ? 'is-scrolled' : ''}`}
+      className={`cv-topbar ${scrolled ? 'is-scrolled' : ''} ${mobileMenuOpen ? 'is-menu-open' : ''}`}
       ref={navRef}
     >
       <div className="cv-topbar-inner">
-        {/* Left: Scroll-Reactive Brand Cell (Cloud Only in Hero -> Strict Official Logo Unfolding to Right on Scroll) */}
+        {/* Left: Adobe-style Mobile Hamburger + Unified Scroll-Animated Official CloudVibe Logo + Desktop Nav */}
         <div className="cv-topbar-left">
+          <button
+            type="button"
+            className="cv-adobe-mobile-menu-btn mobile-only"
+            onClick={onOpenMobileMenu}
+            aria-label="Open main menu"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="cv-sidebar-nav"
+            aria-haspopup="menu"
+            title={mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'}
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+
           <a
             href="#hero"
-            className={`cv-topbar-brand-cell ${pastHero ? 'is-expanded' : ''}`}
+            className={`cv-topbar-brand-cell ${pastHero || mobileMenuOpen ? 'is-expanded' : ''}`}
             onClick={(e) => {
               e.preventDefault();
               setOpenMenu(null);
@@ -92,20 +106,14 @@ export const TopBar: React.FC<TopBarProps> = ({
             }}
             aria-label="cloudvibe — Your IT. Our business."
           >
-            <span className="cv-topbar-logo-stage">
-              <CloudVibeLogo
-                variant="mark"
-                animateBinary={false}
-                className="cv-topbar-cloud-only"
-              />
-              <span className="cv-topbar-logo-reveal" aria-hidden={!pastHero}>
-                <CloudVibeLogo variant="nav" animateBinary={false} />
-              </span>
-            </span>
+            <CloudVibeLogo
+              variant="nav-animated"
+              animateBinary={false}
+              expanded={pastHero || mobileMenuOpen}
+            />
           </a>
 
           <nav className="cv-topbar-nav desktop-only" aria-label="Hauptnavigation">
-
             {menuGroups.map((group) => {
               const isOpen = openMenu === group.key;
               const items = SERVICES.filter((s) => s.category === group.key);
@@ -216,7 +224,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           </nav>
         </div>
 
-        {/* Right: ArtCraft-Style Hairline Utility Cells + Full-Height CTA */}
+        {/* Right: Desktop ArtCraft Utility Cells + Adobe-Style Clean Mobile Pill CTA */}
         <div className="cv-topbar-right">
           <a
             href={CLOUDVIBE_CONTACT.supportPhoneHref}
@@ -244,25 +252,22 @@ export const TopBar: React.FC<TopBarProps> = ({
             aria-label={theme === 'dark' ? 'Zu hellem Design wechseln' : 'Zu dunklem Design wechseln'}
             title={theme === 'dark' ? 'Helles Design' : 'Dunkles Design'}
           >
-            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
-          <button
-            type="button"
-            className="cv-topbar-cell cv-topbar-menu-btn mobile-only"
-            onClick={onOpenMobileMenu}
-            aria-label="Open main menu"
-            aria-expanded={mobileMenuOpen}
-            aria-controls="cv-sidebar-nav"
-            aria-haspopup="menu"
-            title="Menü öffnen"
-          >
-            <Menu size={19} />
-          </button>
-
-          <button type="button" className="cv-topbar-cta-flush" onClick={onOpenBooking}>
+          {/* Desktop ArtCraft Flush CTA */}
+          <button type="button" className="cv-topbar-cta-flush desktop-only" onClick={onOpenBooking}>
             <span>BERATUNG BUCHEN</span>
             <ArrowUpRight size={14} />
+          </button>
+
+          {/* Mobile Adobe-Style Rounded Pill CTA */}
+          <button
+            type="button"
+            className="cv-adobe-mobile-pill mobile-only"
+            onClick={onOpenBooking}
+          >
+            <span>Beratung</span>
           </button>
         </div>
       </div>
