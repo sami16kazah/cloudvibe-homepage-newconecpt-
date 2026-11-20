@@ -15,6 +15,7 @@ import {
   type CloudVibeService,
   type ServiceCategory,
 } from '../data/cloudvibeData';
+import { OFFICIAL_BINARY, OFFICIAL_CLOUD_PATH } from './CloudVibeLogo';
 import { ServiceIcon } from './ServiceIcon';
 
 export type LegalTopic = 'impressum' | 'datenschutz' | 'agb' | 'cookies';
@@ -27,30 +28,6 @@ interface AdobeFooterProps {
   onOpenRemote: () => void;
   onOpenLegal: (topic: LegalTopic) => void;
 }
-
-const FOOTER_BINARY: { x: number; y: number; v: string }[] = [
-  { x: 246, y: 42, v: '1' },
-  { x: 184, y: 65, v: '1' },
-  { x: 226, y: 65, v: '0' },
-  { x: 246, y: 65, v: '0' },
-  { x: 266, y: 65, v: '1' },
-  { x: 142, y: 88, v: '0' },
-  { x: 163, y: 88, v: '1' },
-  { x: 184, y: 88, v: '0' },
-  { x: 205, y: 88, v: '0' },
-  { x: 226, y: 88, v: '1' },
-  { x: 246, y: 88, v: '1' },
-  { x: 266, y: 88, v: '0' },
-  { x: 287, y: 88, v: '0' },
-  { x: 142, y: 111, v: '1' },
-  { x: 163, y: 111, v: '0' },
-  { x: 184, y: 111, v: '1' },
-  { x: 205, y: 111, v: '1' },
-  { x: 226, y: 111, v: '0' },
-  { x: 246, y: 111, v: '0' },
-  { x: 266, y: 111, v: '0' },
-  { x: 287, y: 111, v: '1' },
-];
 
 export const AdobeFooter: React.FC<AdobeFooterProps> = ({
   onSelectService,
@@ -86,7 +63,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
       window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
     const id = window.setInterval(() => {
-      setPulseBit((p) => (p + 1) % FOOTER_BINARY.length);
+      setPulseBit((p) => (p + 1) % OFFICIAL_BINARY.length);
     }, 520);
     return () => window.clearInterval(id);
   }, []);
@@ -408,7 +385,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
 
         <div className="cv-container cv-monument-inner">
           <svg
-            viewBox="0 0 980 315"
+            viewBox="0 0 600 280"
             className="cv-monument-logo-svg"
             role="img"
             aria-label="cloudvibe — Your IT. Our business."
@@ -419,7 +396,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
                 gradientUnits="userSpaceOnUse"
                 x1="0"
                 y1="0"
-                x2="1960"
+                x2="1200"
                 y2="0"
               >
                 <stop offset="0%" stopColor="var(--ink-strong)" />
@@ -433,7 +410,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
                   attributeName="gradientTransform"
                   type="translate"
                   from="0 0"
-                  to="-980 0"
+                  to="-600 0"
                   dur="10s"
                   repeatCount="indefinite"
                 />
@@ -444,7 +421,7 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
                 <stop offset="100%" stopColor="var(--cv-orange)" stopOpacity="0.7" />
               </linearGradient>
               <filter id="cv-monument-glow" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="2.6" result="blur" />
+                <feGaussianBlur stdDeviation="2.2" result="blur" />
                 <feMerge>
                   <feMergeNode in="blur" />
                   <feMergeNode in="SourceGraphic" />
@@ -452,23 +429,23 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
               </filter>
             </defs>
 
-            {/* Sculpted Cloud Arc positioned cleanly over "cloud" */}
+            {/* Official Blue Cloud Arc strictly from 'l' (x=71) to 'd' (x=318) */}
             <path
-              d="M116 105 C115 74, 135 53, 162 49 C172 18, 203 5, 232 12 C250 16, 262 26, 270 38 C291 28, 320 44, 323 71 C338 78, 343 97, 334 111"
+              d={OFFICIAL_CLOUD_PATH}
               fill="none"
               stroke="var(--cv-cloud-blue)"
-              strokeWidth="12"
+              strokeWidth="10.5"
               strokeLinecap="round"
               strokeLinejoin="round"
               className="cv-monument-cloud-path"
             />
 
-            {/* Live Shimmering CloudVibe Binary Matrix */}
-            {FOOTER_BINARY.map((bit, i) => {
+            {/* Live Shimmering CloudVibe Binary Matrix strictly inside l..d */}
+            {OFFICIAL_BINARY.map((bit, i) => {
               const hot =
                 i === pulseBit ||
-                i === (pulseBit + 6) % FOOTER_BINARY.length ||
-                i === (pulseBit + 13) % FOOTER_BINARY.length;
+                i === (pulseBit + 6) % OFFICIAL_BINARY.length ||
+                i === (pulseBit + 13) % OFFICIAL_BINARY.length;
               return (
                 <text
                   key={`${bit.x}-${bit.y}`}
@@ -477,51 +454,51 @@ export const AdobeFooter: React.FC<AdobeFooterProps> = ({
                   textAnchor="middle"
                   fontFamily="'Geist Mono', monospace"
                   fontWeight="700"
-                  fontSize="19"
+                  fontSize="18"
                   fill={hot ? 'var(--cv-green-bright)' : 'var(--cv-green)'}
                   filter={hot ? 'url(#cv-monument-glow)' : undefined}
-                  style={{ transition: 'fill 260ms ease, opacity 260ms ease', opacity: hot ? 1 : 0.85 }}
+                  style={{ transition: 'fill 260ms ease, opacity 260ms ease', opacity: hot ? 1 : 0.88 }}
                 >
-                  {bit.v}
+                  {bit.value}
                 </text>
               );
             })}
 
-            {/* Monumental Edge-to-Edge "cloudvibe" Wordmark */}
+            {/* Monumental Official "cloudvibe" Wordmark locked strictly to l=71, d=318 */}
             <text
-              x="490"
-              y="236"
-              textAnchor="middle"
+              x="4"
+              y="216"
+              textLength="588"
+              lengthAdjust="spacing"
               fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
               fontWeight="600"
-              fontSize="158"
-              letterSpacing="-3.5"
+              fontSize="126"
               fill="url(#cv-monument-word-grad)"
               className="cv-monument-wordmark"
             >
               cloudvibe
             </text>
 
-            {/* Subtle Horizontal Architectural Accent Line Leading into Official Slogan */}
+            {/* Subtle Accent Line Leading into Official Slogan */}
             <line
-              x1="68"
-              y1="286"
-              x2="455"
-              y2="286"
+              x1="6"
+              y1="254"
+              x2="164"
+              y2="254"
               stroke="url(#cv-monument-line-grad)"
-              strokeWidth="2"
+              strokeWidth="1.8"
               strokeLinecap="round"
             />
 
-            {/* Official Slogan Tucked Directly Beneath "vibe" */}
+            {/* Official Slogan Right-Aligned Under "cloudvibe" */}
             <text
-              x="912"
-              y="298"
+              x="592"
+              y="264"
               textAnchor="end"
               fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
-              fontWeight="500"
-              fontSize="39"
-              letterSpacing="0.8"
+              fontWeight="400"
+              fontSize="37"
+              letterSpacing="0.5"
               fill="var(--ink-muted)"
             >
               Your IT. Our business.

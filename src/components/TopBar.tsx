@@ -80,7 +80,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       ref={navRef}
     >
       <div className="cv-topbar-inner">
-        {/* Left: Scroll-Reactive Brand Cell (Cloud Only in Hero -> Smooth Reveal to Right on Scroll) */}
+        {/* Left: Scroll-Reactive Brand Cell (Cloud Only in Hero -> Strict Official Logo Unfolding to Right on Scroll) */}
         <div className="cv-topbar-left">
           <a
             href="#hero"
@@ -92,11 +92,14 @@ export const TopBar: React.FC<TopBarProps> = ({
             }}
             aria-label="cloudvibe — Your IT. Our business."
           >
-            <CloudVibeLogo variant="mark" animateBinary={false} className="cv-topbar-cloud-only" />
-            <span className="cv-topbar-logo-reveal" aria-hidden={!pastHero}>
-              <span className="cv-topbar-logo-reveal-inner">
-                <span className="cv-topbar-wordmark">cloudvibe</span>
-                <span className="cv-topbar-slogan">Your IT. Our business.</span>
+            <span className="cv-topbar-logo-stage">
+              <CloudVibeLogo
+                variant="mark"
+                animateBinary={false}
+                className="cv-topbar-cloud-only"
+              />
+              <span className="cv-topbar-logo-reveal" aria-hidden={!pastHero}>
+                <CloudVibeLogo variant="nav" animateBinary={false} />
               </span>
             </span>
           </a>

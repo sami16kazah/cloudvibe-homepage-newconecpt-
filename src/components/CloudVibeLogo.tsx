@@ -6,33 +6,44 @@ interface CloudVibeLogoProps {
   className?: string;
 }
 
-const BINARY_GRID: { x: number; y: number; value: string; delay: number }[] = [
-  // Row 1 (peak)
-  { x: 112, y: 40, value: '1', delay: 0 },
+/**
+ * Official cloudvibe.de logo geometry calibrated to Comfortaa at fontSize 126 in 600x280:
+ * - Stem of 'l' sits at x = 88
+ * - Stem of 'd' sits at x = 334
+ * - Blue cloud arc starts dead-aligned on 'l' (x = 88) and ends dead-aligned on 'd' (x = 334)
+ * - Green binary digits sit strictly inside the l..d pocket (x = 113..309) with zero stem overlap
+ */
+export const OFFICIAL_BINARY: { x: number; y: number; value: string }[] = [
+  // Row 1 (right peak)
+  { x: 256, y: 60, value: '1' },
   // Row 2
-  { x: 64, y: 58, value: '1', delay: 2 },
-  { x: 96, y: 58, value: '0', delay: 4 },
-  { x: 112, y: 58, value: '0', delay: 1 },
-  { x: 128, y: 58, value: '1', delay: 5 },
+  { x: 169, y: 83, value: '1' },
+  { x: 227, y: 83, value: '0' },
+  { x: 256, y: 83, value: '0' },
+  { x: 285, y: 83, value: '1' },
   // Row 3
-  { x: 32, y: 76, value: '0', delay: 3 },
-  { x: 48, y: 76, value: '1', delay: 6 },
-  { x: 64, y: 76, value: '0', delay: 1 },
-  { x: 80, y: 76, value: '0', delay: 4 },
-  { x: 96, y: 76, value: '1', delay: 0 },
-  { x: 112, y: 76, value: '1', delay: 5 },
-  { x: 128, y: 76, value: '0', delay: 2 },
-  { x: 144, y: 76, value: '0', delay: 7 },
-  // Row 4
-  { x: 32, y: 94, value: '1', delay: 5 },
-  { x: 48, y: 94, value: '0', delay: 2 },
-  { x: 64, y: 94, value: '1', delay: 7 },
-  { x: 80, y: 94, value: '1', delay: 3 },
-  { x: 96, y: 94, value: '0', delay: 6 },
-  { x: 112, y: 94, value: '0', delay: 1 },
-  { x: 128, y: 94, value: '0', delay: 4 },
-  { x: 144, y: 94, value: '1', delay: 0 },
+  { x: 113, y: 106, value: '0' },
+  { x: 141, y: 106, value: '1' },
+  { x: 169, y: 106, value: '0' },
+  { x: 198, y: 106, value: '0' },
+  { x: 227, y: 106, value: '1' },
+  { x: 256, y: 106, value: '1' },
+  { x: 285, y: 106, value: '0' },
+  { x: 310, y: 106, value: '0' },
+  // Row 4 (cleanly inside l..d pocket above o & u)
+  { x: 113, y: 129, value: '1' },
+  { x: 141, y: 129, value: '0' },
+  { x: 169, y: 129, value: '1' },
+  { x: 198, y: 129, value: '1' },
+  { x: 227, y: 129, value: '0' },
+  { x: 256, y: 129, value: '0' },
+  { x: 285, y: 129, value: '0' },
+  { x: 310, y: 129, value: '1' },
 ];
+
+// Official cloud arc path strictly spanning x = 88 (l stem) to x = 334 (d stem)
+export const OFFICIAL_CLOUD_PATH =
+  'M88 108 C88 76, 106 56, 131 52 C139 21, 169 8, 198 12 C218 15, 231 25, 239 36 C261 25, 293 36, 299 65 C321 70, 334 87, 334 108';
 
 export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
   variant = 'full',
@@ -49,31 +60,31 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
     if (prefersReduced) return;
 
     const interval = window.setInterval(() => {
-      setPulseIndex((prev) => (prev + 1) % BINARY_GRID.length);
-    }, 650);
+      setPulseIndex((prev) => (prev + 1) % OFFICIAL_BINARY.length);
+    }, 620);
     return () => window.clearInterval(interval);
   }, [animateBinary]);
 
   if (variant === 'mark') {
     return (
       <svg
-        viewBox="0 0 176 112"
+        viewBox="76 4 270 134"
         className={`cv-logo-mark ${className}`}
         aria-label="cloudvibe Logo"
         role="img"
       >
         <path
-          d="M20 82 C19 60, 32 45, 50 42 C56 20, 76 10, 96 14 C109 16, 118 23, 123 31 C138 24, 157 35, 159 54 C169 59, 172 72, 166 84"
+          d={OFFICIAL_CLOUD_PATH}
           fill="none"
           stroke="var(--cv-cloud-blue)"
-          strokeWidth="10"
+          strokeWidth="12"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="cv-cloud-stroke"
         />
-        {BINARY_GRID.map((bit, i) => {
+        {OFFICIAL_BINARY.map((bit, i) => {
           const isActive =
-            animateBinary && (i === pulseIndex || i === (pulseIndex + 7) % BINARY_GRID.length);
+            animateBinary &&
+            (i === pulseIndex || i === (pulseIndex + 7) % OFFICIAL_BINARY.length);
           return (
             <text
               key={`${bit.x}-${bit.y}`}
@@ -82,11 +93,11 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
               textAnchor="middle"
               fontFamily="'Geist Mono', monospace"
               fontWeight="700"
-              fontSize="14.5"
+              fontSize="19"
               fill={isActive ? 'var(--cv-green-bright)' : 'var(--cv-green)'}
               style={{
-                transition: 'fill 320ms ease, opacity 320ms ease',
-                opacity: isActive ? 1 : 0.86,
+                transition: 'fill 300ms ease, opacity 300ms ease',
+                opacity: isActive ? 1 : 0.9,
               }}
             >
               {bit.value}
@@ -104,51 +115,49 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
         role="img"
         aria-label="cloudvibe — Your IT. Our business."
       >
-        <svg viewBox="0 0 430 218" className="cv-logo-nav-svg" aria-hidden="true">
-          <g transform="translate(36, 4) scale(1.12)">
-            <path
-              d="M16 74 C16 52, 30 37, 49 34 C56 12, 78 3, 98 8 C110 11, 118 18, 123 26 C138 19, 158 30, 160 49 C170 54, 174 67, 168 77"
-              fill="none"
-              stroke="var(--cv-cloud-blue)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            {BINARY_GRID.map((bit) => (
-              <text
-                key={`${bit.x}-${bit.y}`}
-                x={bit.x}
-                y={bit.y - 6}
-                textAnchor="middle"
-                fontFamily="'Geist Mono', monospace"
-                fontWeight="700"
-                fontSize="14.5"
-                fill="var(--cv-green)"
-              >
-                {bit.value}
-              </text>
-            ))}
-          </g>
+        <svg viewBox="0 0 600 280" className="cv-logo-nav-svg" aria-hidden="true">
+          <path
+            d={OFFICIAL_CLOUD_PATH}
+            fill="none"
+            stroke="var(--cv-cloud-blue)"
+            strokeWidth="11.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          {OFFICIAL_BINARY.map((bit) => (
+            <text
+              key={`${bit.x}-${bit.y}`}
+              x={bit.x}
+              y={bit.y}
+              textAnchor="middle"
+              fontFamily="'Geist Mono', monospace"
+              fontWeight="700"
+              fontSize="18.5"
+              fill="var(--cv-green)"
+            >
+              {bit.value}
+            </text>
+          ))}
           <text
-            x="215"
-            y="168"
-            textAnchor="middle"
+            x="4"
+            y="216"
+            textLength="588"
+            lengthAdjust="spacing"
             fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
-            fontWeight="700"
-            fontSize="76"
-            letterSpacing="-1.5"
+            fontWeight="600"
+            fontSize="126"
             fill="var(--ink-strong)"
           >
             cloudvibe
           </text>
           <text
-            x="396"
-            y="206"
+            x="592"
+            y="264"
             textAnchor="end"
             fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
-            fontWeight="500"
-            fontSize="24"
-            letterSpacing="0.4"
+            fontWeight="400"
+            fontSize="38"
+            letterSpacing="0.5"
             fill="var(--ink-muted)"
           >
             Your IT. Our business.
@@ -162,19 +171,21 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
     return (
       <span className={`cv-logo-compact ${className}`}>
         <CloudVibeLogo variant="mark" animateBinary={animateBinary} className="cv-logo-compact-mark" />
-        <span className="cv-logo-compact-text">
-          cloud<span className="cv-logo-accent">vibe</span>
-        </span>
+        <span className="cv-logo-compact-text">cloudvibe</span>
       </span>
     );
   }
 
   return (
-    <div className={`cv-logo-full ${className}`} role="img" aria-label="cloudvibe — Your IT. Our business.">
-      <svg viewBox="0 0 430 218" className="cv-logo-full-svg" aria-hidden="true">
+    <div
+      className={`cv-logo-full ${className}`}
+      role="img"
+      aria-label="cloudvibe — Your IT. Our business."
+    >
+      <svg viewBox="0 0 600 280" className="cv-logo-full-svg" aria-hidden="true">
         <defs>
           <filter id="cv-green-glow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="2.4" result="blur" />
+            <feGaussianBlur stdDeviation="2.6" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
@@ -182,71 +193,70 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
           </filter>
         </defs>
 
-        {/* Cloud Arc positioned cleanly above "cloud" */}
-        <g transform="translate(36, 4) scale(1.12)">
-          <path
-            d="M16 74 C16 52, 30 37, 49 34 C56 12, 78 3, 98 8 C110 11, 118 18, 123 26 C138 19, 158 30, 160 49 C170 54, 174 67, 168 77"
-            fill="none"
-            stroke="var(--cv-cloud-blue)"
-            strokeWidth="8.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="cv-cloud-stroke"
-          />
+        {/* Official Blue Cloud Arc strictly from 'l' (x=88) to 'd' (x=334) */}
+        <path
+          d={OFFICIAL_CLOUD_PATH}
+          pathLength={100}
+          fill="none"
+          stroke="var(--cv-cloud-blue)"
+          strokeWidth="10.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="cv-cloud-stroke"
+        />
 
-          {/* Authentic CloudVibe Binary Matrix */}
-          {BINARY_GRID.map((bit, i) => {
-            const isActive =
-              animateBinary &&
-              (i === pulseIndex ||
-                i === (pulseIndex + 5) % BINARY_GRID.length ||
-                i === (pulseIndex + 11) % BINARY_GRID.length);
-            return (
-              <text
-                key={`${bit.x}-${bit.y}`}
-                x={bit.x}
-                y={bit.y - 6}
-                textAnchor="middle"
-                fontFamily="'Geist Mono', monospace"
-                fontWeight="700"
-                fontSize="13.5"
-                fill={isActive ? 'var(--cv-green-bright)' : 'var(--cv-green)'}
-                filter={isActive ? 'url(#cv-green-glow)' : undefined}
-                style={{
-                  transition: 'fill 260ms ease, opacity 260ms ease',
-                  opacity: isActive ? 1 : 0.85,
-                }}
-              >
-                {bit.value}
-              </text>
-            );
-          })}
-        </g>
+        {/* Authentic Binary Matrix strictly inside l..d */}
+        {OFFICIAL_BINARY.map((bit, i) => {
+          const isActive =
+            animateBinary &&
+            (i === pulseIndex ||
+              i === (pulseIndex + 5) % OFFICIAL_BINARY.length ||
+              i === (pulseIndex + 11) % OFFICIAL_BINARY.length);
+          return (
+            <text
+              key={`${bit.x}-${bit.y}`}
+              x={bit.x}
+              y={bit.y}
+              textAnchor="middle"
+              fontFamily="'Geist Mono', monospace"
+              fontWeight="700"
+              fontSize="18"
+              fill={isActive ? 'var(--cv-green-bright)' : 'var(--cv-green)'}
+              filter={isActive ? 'url(#cv-green-glow)' : undefined}
+              style={{
+                transition: 'fill 260ms ease, opacity 260ms ease',
+                opacity: isActive ? 1 : 0.88,
+              }}
+            >
+              {bit.value}
+            </text>
+          );
+        })}
 
-        {/* Lowercase rounded geometric "cloudvibe" wordmark with crisp breathing room */}
+        {/* Lowercase rounded geometric "cloudvibe" wordmark locked to l=71, d=318 */}
         <text
-          x="215"
-          y="168"
-          textAnchor="middle"
+          x="4"
+          y="216"
+          textLength="588"
+          lengthAdjust="spacing"
           fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
           fontWeight="600"
-          fontSize="74"
-          letterSpacing="-1.5"
+          fontSize="126"
           fill="var(--ink-strong)"
           className="cv-wordmark-text"
         >
           cloudvibe
         </text>
 
-        {/* Right-aligned tagline */}
+        {/* Official Right-Aligned Gray Slogan */}
         <text
-          x="396"
-          y="204"
+          x="592"
+          y="264"
           textAnchor="end"
           fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
           fontWeight="400"
-          fontSize="22"
-          letterSpacing="0.4"
+          fontSize="37"
+          letterSpacing="0.5"
           fill="var(--ink-muted)"
         >
           Your IT. Our business.
