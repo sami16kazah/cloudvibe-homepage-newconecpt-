@@ -113,9 +113,9 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
   // Orbit radii tuned so icons form a clean, generous perimeter around the center logo & text
   const rings = isCompact
     ? [
-        { rx: Math.max(176, stageSize.width * 0.49), ry: Math.max(305, stageSize.height * 0.42) },
-        { rx: Math.max(212, stageSize.width * 0.59), ry: Math.max(350, stageSize.height * 0.48) },
-        { rx: Math.max(248, stageSize.width * 0.69), ry: Math.max(395, stageSize.height * 0.54) },
+        { rx: Math.max(190, stageSize.width * 0.52), ry: Math.max(350, stageSize.height * 0.48) },
+        { rx: Math.max(226, stageSize.width * 0.62), ry: Math.max(395, stageSize.height * 0.54) },
+        { rx: Math.max(262, stageSize.width * 0.72), ry: Math.max(440, stageSize.height * 0.6) },
       ]
     : [
         { rx: Math.max(410, Math.min(510, stageSize.width * 0.365)), ry: Math.max(310, minDim * 0.415) },
@@ -234,11 +234,11 @@ export const OrbitalHero: React.FC<OrbitalHeroProps> = ({
             const scale = isHovered ? 1.18 : item.depth;
             const isHiddenOnTiny = isCompact && item.ring === 2;
 
-            // Gentle soft veil if an icon passes near the center copy column on smaller screens
-            const dxNorm = Math.abs(x - cx) / (isCompact ? 155 : 335);
-            const dyNorm = Math.abs(y - cy) / (isCompact ? 230 : 250);
+            // Gentle soft veil if an icon passes near the center logo or copy column on smaller screens
+            const dxNorm = Math.abs(x - cx) / (isCompact ? 176 : 335);
+            const dyNorm = Math.abs(y - cy) / (isCompact ? 325 : 250);
             const inTextZone = dxNorm < 1 && dyNorm < 1;
-            const tileOpacity = isHovered ? 1 : inTextZone ? 0.22 : 1;
+            const tileOpacity = isHovered ? 1 : inTextZone ? (isCompact ? 0.1 : 0.22) : 1;
 
             if (isHiddenOnTiny) return null;
 
