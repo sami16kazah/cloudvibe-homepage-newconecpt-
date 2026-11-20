@@ -11,7 +11,7 @@ interface SectionMetric {
 }
 
 const EDGE_PAD = 14;
-const TOP_OFFSET = 54;
+const TOP_OFFSET = 60;
 const RAIL_W = 54;
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));

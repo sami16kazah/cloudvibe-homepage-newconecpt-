@@ -88,12 +88,9 @@ export const TopBar: React.FC<TopBarProps> = ({
               setOpenMenu(null);
               onNavigate('hero');
             }}
-            aria-label="cloudvibe Startseite"
+            aria-label="cloudvibe — Your IT. Our business."
           >
-            <CloudVibeLogo variant="mark" animateBinary={false} className="cv-topbar-mark" />
-            <span className="cv-topbar-brand-word">
-              cloud<span>vibe</span>
-            </span>
+            <CloudVibeLogo variant="nav" animateBinary={false} />
           </a>
 
           <nav className="cv-topbar-nav desktop-only" aria-label="Hauptnavigation">

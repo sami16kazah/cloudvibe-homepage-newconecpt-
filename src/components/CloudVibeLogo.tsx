@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 interface CloudVibeLogoProps {
-  variant?: 'full' | 'compact' | 'mark';
+  variant?: 'full' | 'nav' | 'compact' | 'mark';
   animateBinary?: boolean;
   className?: string;
 }
@@ -94,6 +94,67 @@ export const CloudVibeLogo: React.FC<CloudVibeLogoProps> = ({
           );
         })}
       </svg>
+    );
+  }
+
+  if (variant === 'nav') {
+    return (
+      <span
+        className={`cv-logo-nav ${className}`}
+        role="img"
+        aria-label="cloudvibe — Your IT. Our business."
+      >
+        <svg viewBox="0 0 430 218" className="cv-logo-nav-svg" aria-hidden="true">
+          <g transform="translate(36, 4) scale(1.12)">
+            <path
+              d="M16 74 C16 52, 30 37, 49 34 C56 12, 78 3, 98 8 C110 11, 118 18, 123 26 C138 19, 158 30, 160 49 C170 54, 174 67, 168 77"
+              fill="none"
+              stroke="var(--cv-cloud-blue)"
+              strokeWidth="10"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            {BINARY_GRID.map((bit) => (
+              <text
+                key={`${bit.x}-${bit.y}`}
+                x={bit.x}
+                y={bit.y - 6}
+                textAnchor="middle"
+                fontFamily="'Geist Mono', monospace"
+                fontWeight="700"
+                fontSize="14.5"
+                fill="var(--cv-green)"
+              >
+                {bit.value}
+              </text>
+            ))}
+          </g>
+          <text
+            x="215"
+            y="168"
+            textAnchor="middle"
+            fontFamily="'Comfortaa', 'Archivo', system-ui, sans-serif"
+            fontWeight="700"
+            fontSize="76"
+            letterSpacing="-1.5"
+            fill="var(--ink-strong)"
+          >
+            cloudvibe
+          </text>
+          <text
+            x="396"
+            y="206"
+            textAnchor="end"
+            fontFamily="'Comfortaa', 'Inter', system-ui, sans-serif"
+            fontWeight="500"
+            fontSize="24"
+            letterSpacing="0.4"
+            fill="var(--ink-muted)"
+          >
+            Your IT. Our business.
+          </text>
+        </svg>
+      </span>
     );
   }
 

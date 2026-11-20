@@ -21,7 +21,7 @@
   /* Layout Dimensions */
   --sidebar-w: 68px;
   --sidebar-w-expanded: 244px;
-  --topbar-h: 54px;
+  --topbar-h: 60px;
   --container-max: 1280px;
 
   /* Motion */
@@ -935,8 +935,7 @@ textarea:focus-visible {
 .cv-topbar-brand-cell {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 0 20px;
+  padding: 5px 18px;
   border-right: 1px solid var(--line);
   transition: background-color 160ms ease;
 }
@@ -945,22 +944,15 @@ textarea:focus-visible {
   background: var(--bg-card);
 }
 
-.cv-topbar-mark {
-  width: 34px;
-  height: 22px;
-  flex-shrink: 0;
+.cv-logo-nav {
+  display: inline-flex;
+  align-items: center;
 }
 
-.cv-topbar-brand-word {
-  font-family: var(--font-brand);
-  font-weight: 700;
-  font-size: 16.5px;
-  color: var(--ink-strong);
-  letter-spacing: -0.02em;
-}
-
-.cv-topbar-brand-word span {
-  color: var(--cv-green);
+.cv-logo-nav-svg {
+  height: 46px;
+  width: auto;
+  display: block;
 }
 
 .cv-topbar-nav {

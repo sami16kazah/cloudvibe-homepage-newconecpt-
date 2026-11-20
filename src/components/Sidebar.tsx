@@ -72,13 +72,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onNavigate('hero');
               onCloseMobile();
             }}
-            aria-label="cloudvibe Startseite"
+            aria-label="cloudvibe — Your IT. Our business."
           >
-            <CloudVibeLogo variant="mark" className="cv-sidebar-mark" />
-            <span className="cv-drawer-brand-text">
-              <strong>cloudvibe</strong>
-              <small>Goch · IT &amp; TI</small>
-            </span>
+            <CloudVibeLogo variant="nav" animateBinary={false} />
           </a>
 
           <button
